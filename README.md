@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flow — Idea Board
+
+A canvas-based brainstorming app built with React Flow for artists and creatives. Connect text, concepts, images, and AI processing nodes to develop your ideas visually.
+
+## Features
+
+- **Text Nodes** — Free-form text for quick notes and ideas
+- **Concept Cards** — Structured cards with title, description, and tags
+- **Image Upload** — Drag & drop or click to upload visual references
+- **Run Nodes** — Connect your content and process it with Claude AI to synthesize creative outputs
+- **Full connectivity** — All node types can be linked to each other
+- **Dark/Light theme** — Glassmorphic UI with theme support
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- An [Anthropic API key](https://console.anthropic.com/)
+
+### Installation
+
+```bash
+npm install
+```
+
+### Environment
+
+Create a `.env` file in the project root:
+
+```
+ANTHROPIC_API_KEY=your-api-key-here
+```
+
+### Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Use the **prompt bar** at the bottom to type ideas (press Enter to create a text node) or click the icons to add nodes
+2. **Double click** any text field on a node to edit it
+3. **Drag from handles** (dots on node edges) to connect nodes together
+4. Connect content nodes to a **Run node**, then press the **sparkle button** in the prompt bar to process everything with AI
+5. Delete nodes/edges by selecting them and pressing Backspace
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js 16](https://nextjs.org/) + React 19
+- [XY Flow (React Flow)](https://reactflow.dev/) for the canvas
+- [Anthropic SDK](https://docs.anthropic.com/) for AI processing
+- [Tailwind CSS v4](https://tailwindcss.com/)
+- [Lucide Icons](https://lucide.dev/)
