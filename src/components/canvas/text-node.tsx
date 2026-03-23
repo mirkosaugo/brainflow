@@ -20,25 +20,39 @@ function TextNodeComponent({ id, data, selected }: NodeProps) {
 
   return (
     <div
-      className="group relative min-w-48 max-w-72 rounded-2xl border shadow-lg transition-shadow bg-[var(--node-bg)] border-[var(--node-border)]"
+      className="group relative w-72 rounded-2xl overflow-hidden shadow-lg transition-shadow bg-[var(--node-bg)]"
       style={{
-        borderColor: selected ? nodeData.color : undefined,
-        boxShadow: selected ? `0 0 20px ${nodeData.color}40` : undefined,
+        borderWidth: 1,
+        borderTopColor: selected ? nodeData.color : "var(--node-border)",
+        borderRightColor: selected ? nodeData.color : "var(--node-border)",
+        borderBottomColor: selected ? nodeData.color : "var(--node-border)",
+        borderLeftWidth: 4,
+        borderLeftColor: nodeData.color,
+        borderRadius: "4px 16px 16px 4px",
+        boxShadow: selected ? `0 0 8px ${nodeData.color}15` : undefined,
       }}
     >
       <Handle type="target" position={Position.Top} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
       <Handle type="source" position={Position.Bottom} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
-      <Handle type="target" position={Position.Left} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
+      <Handle type="target" position={Position.Left} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" style={{ left: -2 }} />
       <Handle type="source" position={Position.Right} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
 
-      <div className="flex items-center gap-2 px-4 pt-3 pb-1">
-        <Type className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-        <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-          Text
-        </span>
+      {/* Header */}
+      <div
+        className="flex items-center gap-2 px-4 py-3"
+        style={{ background: `${nodeData.color}15` }}
+      >
+        <div
+          className="flex h-8 w-8 items-center justify-center rounded-xl"
+          style={{ background: `${nodeData.color}25` }}
+        >
+          <Type className="h-4 w-4" style={{ color: nodeData.color }} />
+        </div>
+        <h3 className="text-sm font-semibold text-foreground">Text</h3>
       </div>
 
-      <div className="px-4 pb-4 pt-1">
+      {/* Content */}
+      <div className="px-4 py-3">
         {editing ? (
           <textarea
             autoFocus

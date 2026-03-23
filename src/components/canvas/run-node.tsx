@@ -25,7 +25,7 @@ function RunNodeComponent({ data, selected }: NodeProps) {
       )}
       style={{
         borderColor: selected ? nodeData.color : undefined,
-        boxShadow: selected ? `0 0 20px ${nodeData.color}40` : undefined,
+        boxShadow: selected ? `0 0 8px ${nodeData.color}15` : undefined,
       }}
     >
       <Handle type="target" position={Position.Top} className="!w-3 !h-3 !bg-emerald-500 !border-2 !border-emerald-700" />
@@ -48,10 +48,12 @@ function RunNodeComponent({ data, selected }: NodeProps) {
           <h3 className="text-sm font-semibold text-foreground truncate">
             {nodeData.label}
           </h3>
-          <div className="flex items-center gap-1.5">
-            <StatusIcon className={cn("h-3 w-3", iconClass)} />
-            <span className="text-[10px] text-muted-foreground">{statusLabel}</span>
-          </div>
+          {nodeData.status !== "idle" && (
+            <div className="flex items-center gap-1.5">
+              <StatusIcon className={cn("h-3 w-3", iconClass)} />
+              <span className="text-[10px] text-muted-foreground">{statusLabel}</span>
+            </div>
+          )}
         </div>
       </div>
 

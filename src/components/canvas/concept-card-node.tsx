@@ -36,15 +36,16 @@ function ConceptCardNodeComponent({ id, data, selected }: NodeProps) {
 
   return (
     <div
-      className="group relative w-64 rounded-2xl border shadow-lg overflow-hidden transition-shadow bg-[var(--node-bg)] border-[var(--node-border)]"
+      className="group relative w-64 rounded-2xl overflow-hidden shadow-lg transition-shadow bg-[var(--node-bg)]"
       style={{
-        borderTopColor: selected ? nodeData.color : undefined,
-        borderRightColor: selected ? nodeData.color : undefined,
-        borderBottomColor: selected ? nodeData.color : undefined,
+        borderWidth: 1,
+        borderTopColor: selected ? nodeData.color : "var(--node-border)",
+        borderRightColor: selected ? nodeData.color : "var(--node-border)",
+        borderBottomColor: selected ? nodeData.color : "var(--node-border)",
         borderLeftWidth: 4,
         borderLeftColor: nodeData.color,
         borderRadius: "4px 16px 16px 4px",
-        boxShadow: selected ? `0 0 20px ${nodeData.color}40` : undefined,
+        boxShadow: selected ? `0 0 8px ${nodeData.color}15` : undefined,
       }}
     >
       <Handle type="target" position={Position.Top} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
@@ -53,15 +54,21 @@ function ConceptCardNodeComponent({ id, data, selected }: NodeProps) {
       <Handle type="source" position={Position.Right} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
 
       {/* Header */}
-      <div className="flex items-center gap-2 px-4 pt-4 pb-1">
-        <Lightbulb className="h-4 w-4 shrink-0" style={{ color: nodeData.color }} />
-        <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-          Concept
-        </span>
+      <div
+        className="flex items-center gap-2 px-4 py-3"
+        style={{ background: `${nodeData.color}15` }}
+      >
+        <div
+          className="flex h-8 w-8 items-center justify-center rounded-xl"
+          style={{ background: `${nodeData.color}25` }}
+        >
+          <Lightbulb className="h-4 w-4" style={{ color: nodeData.color }} />
+        </div>
+        <h3 className="text-sm font-semibold text-foreground">Concept</h3>
       </div>
 
       {/* Title */}
-      <div className="px-4 pt-1 pb-1">
+      <div className="px-4 pt-3 pb-1">
         {editingField === "title" ? (
           <input
             autoFocus

@@ -47,7 +47,7 @@ export function Header() {
     >
       <div className="flex items-center gap-3 pointer-events-auto">
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-2xl shadow-[0_0_15px_0_rgb(0_0_0/0.25)] hover:bg-muted transition-colors outline-none">
+          <DropdownMenuTrigger className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted/50 transition-colors outline-none">
             <Menu className="h-5 w-5" />
           </DropdownMenuTrigger>
           <DropdownMenuContent

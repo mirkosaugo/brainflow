@@ -40,26 +40,39 @@ function ImageNodeComponent({ id, data, selected }: NodeProps) {
 
   return (
     <div
-      className="group relative w-56 rounded-2xl border shadow-lg overflow-hidden transition-shadow bg-[var(--node-bg)] border-[var(--node-border)]"
+      className="group relative w-64 rounded-2xl overflow-hidden shadow-lg transition-shadow bg-[var(--node-bg)]"
       style={{
-        borderColor: selected ? nodeData.color : undefined,
-        boxShadow: selected ? `0 0 20px ${nodeData.color}40` : undefined,
+        borderWidth: 1,
+        borderTopColor: selected ? nodeData.color : "var(--node-border)",
+        borderRightColor: selected ? nodeData.color : "var(--node-border)",
+        borderBottomColor: selected ? nodeData.color : "var(--node-border)",
+        borderLeftWidth: 4,
+        borderLeftColor: nodeData.color,
+        borderRadius: "4px 16px 16px 4px",
+        boxShadow: selected ? `0 0 8px ${nodeData.color}15` : undefined,
       }}
     >
       <Handle type="target" position={Position.Top} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
       <Handle type="source" position={Position.Bottom} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
-      <Handle type="target" position={Position.Left} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
+      <Handle type="target" position={Position.Left} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" style={{ left: -2 }} />
       <Handle type="source" position={Position.Right} className="!w-3 !h-3 !bg-neutral-500 !border-2 !border-neutral-700" />
 
-      <div className="flex items-center gap-2 px-4 pt-3 pb-1">
-        <ImagePlus className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-        <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-          Image
-        </span>
+      {/* Header */}
+      <div
+        className="flex items-center gap-2 px-4 py-3"
+        style={{ background: `${nodeData.color}15` }}
+      >
+        <div
+          className="flex h-8 w-8 items-center justify-center rounded-xl"
+          style={{ background: `${nodeData.color}25` }}
+        >
+          <ImagePlus className="h-4 w-4" style={{ color: nodeData.color }} />
+        </div>
+        <h3 className="flex-1 text-sm font-semibold text-foreground">Image</h3>
         {nodeData.src && (
           <button
             onClick={clearImage}
-            className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground"
+            className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground"
           >
             <X className="h-3.5 w-3.5" />
           </button>
@@ -68,7 +81,7 @@ function ImageNodeComponent({ id, data, selected }: NodeProps) {
 
       {/* Image area */}
       {nodeData.src ? (
-        <div className="px-3 pb-2">
+        <div className="px-3 py-2">
           <img
             src={nodeData.src}
             alt={nodeData.caption || "uploaded"}
@@ -77,9 +90,9 @@ function ImageNodeComponent({ id, data, selected }: NodeProps) {
         </div>
       ) : (
         <div
-          className="mx-3 mb-2 flex flex-col items-center justify-center rounded-xl border-2 border-dashed py-8 cursor-pointer transition-colors"
+          className="mx-3 my-2 flex flex-col items-center justify-center rounded-xl border-2 border-dashed py-8 cursor-pointer transition-colors"
           style={{
-            borderColor: dragging ? nodeData.color : "var(--glass-border)",
+            borderColor: dragging ? nodeData.color : "var(--node-border)",
             background: dragging ? `${nodeData.color}10` : "transparent",
           }}
           onDragOver={(e) => { e.preventDefault(); setDragging(true); }}

@@ -1,1 +1,2 @@
 - [feedback_blur_ui.md](feedback_blur_ui.md) — All app UI overlays must use backdrop-blur glassmorphism; canvas nodes are exempt
+- [feedback_shadcn_first.md](feedback_shadcn_first.md) — Always check shadcn ecosystem and docs before building any UI component or page
