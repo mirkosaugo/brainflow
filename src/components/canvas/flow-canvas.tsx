@@ -27,6 +27,7 @@ import { ConceptCardNodeComponent_ } from "./concept-card-node";
 import { ImageNodeComponent_ } from "./image-node";
 import { RunNodeComponent_ } from "./run-node";
 import { CustomEdge } from "./custom-edge";
+import { AmbientGlow } from "./ambient-glow";
 import { DotGlowBackground } from "./dot-glow-background";
 import { ConnectionLinePreview } from "./connection-line-preview";
 import { CanvasToolbar } from "./canvas-toolbar";
@@ -379,6 +380,9 @@ function FlowCanvasInner() {
 
         {/* Connection preview line */}
         {connectingFrom && <ConnectionLinePreview sourceNodeId={connectingFrom} />}
+
+
+        <AmbientGlow active={isRunning} />
 
         {/* Overlays */}
         <CanvasToolbar activeTool={activeTool} onToolChange={setActiveTool} />
