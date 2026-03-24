@@ -8,7 +8,7 @@ export const NODE_COLORS = {
 
 // Default edge styling
 export const DEFAULT_EDGE_STYLE = {
-  stroke: "#ffffff30",
+  stroke: "var(--edge-stroke)",
   strokeWidth: 2,
 } as const;
 
@@ -17,7 +17,7 @@ export const SNAP_GRID: [number, number] = [16, 16];
 
 // Glass-morphism UI classes (for app overlays — NOT canvas nodes)
 export const GLASS_CONTAINER_CLASS =
-  "bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-2xl shadow-[0_0_15px_0_rgb(0_0_0/0.25)]";
+  "bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-2xl shadow-[var(--glass-shadow)]";
 
 // Icon button class shared across toolbars
 export const ICON_BTN_CLASS =

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrainFlow — Case History | AI-Orchestrated Development</title>
+  <style>
+    /* ============================================
+       BrainFlow Design System — Embedded for portability
+       ============================================ */
+    @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
+
+    :root {
+      --bg: #202124;
+      --fg: #f5f5f5;
+      --fg-muted: #9ca3af;
+      --surface: #2a2b2e;
+      --border: rgba(255, 255, 255, 0.1);
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-shadow: 0 0 15px 0 rgb(0 0 0 / 0.25);
+      --purple: #A78BFA;
+      --cyan: #38BDF8;
+      --emerald: #34D399;
+      --slate: #64748b;
+      --radius: 0.875rem;
+      --font-sans: 'Satoshi', system-ui, sans-serif;
+      --font-mono: 'Geist Mono', 'SF Mono', 'Fira Code', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================
+       Layout
+       ============================================ */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ============================================
+       Hero
+       ============================================ */
+    .hero {
+      padding: 6rem 0 4rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(167, 139, 250, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 2rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      margin-bottom: 2rem;
+      backdrop-filter: blur(20px);
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--emerald);
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 .accent { color: var(--purple); }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--fg-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       Sections
+       ============================================ */
+    section {
+      padding: 4rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    p { margin-bottom: 1rem; }
+
+    .section-lead {
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ============================================
+       Glass Cards
+       ============================================ */
+    .glass-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      backdrop-filter: blur(40px);
+      box-shadow: var(--glass-shadow);
+      margin-bottom: 1.5rem;
+    }
+
+    .glass-card h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .glass-card p {
+      color: var(--fg-muted);
+      font-size: 0.9rem;
+    }
+
+    .glass-card .tag {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-right: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .tag-purple { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+    .tag-cyan { background: rgba(56, 189, 248, 0.15); color: var(--cyan); }
+    .tag-emerald { background: rgba(52, 211, 153, 0.15); color: var(--emerald); }
+    .tag-slate { background: rgba(100, 116, 139, 0.15); color: var(--slate); }
+
+    /* ============================================
+       Grid
+       ============================================ */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      h1 { font-size: 2.2rem; }
+    }
+
+    /* ============================================
+       Code blocks
+       ============================================ */
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.3rem;
+    }
+
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    /* ============================================
+       Timeline
+       ============================================ */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--purple), var(--emerald), var(--cyan));
+      border-radius: 1px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.5rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--purple);
+      border: 2px solid var(--bg);
+    }
+
+    .timeline-item:nth-child(2)::before { background: var(--emerald); }
+    .timeline-item:nth-child(3)::before { background: var(--cyan); }
+    .timeline-item:nth-child(4)::before { background: var(--purple); }
+    .timeline-item:nth-child(5)::before { background: var(--emerald); }
+
+    .timeline-date {
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.9rem;
+      color: var(--fg-muted);
+    }
+
+    /* ============================================
+       Skill Map
+       ============================================ */
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-row:last-child { border-bottom: none; }
+
+    .skill-cmd {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--purple);
+      min-width: 140px;
+      font-weight: 500;
+    }
+
+    .skill-desc {
+      color: var(--fg-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ============================================
+       Philosophy Quote
+       ============================================ */
+    blockquote {
+      border-left: 3px solid var(--purple);
+      padding: 1rem 1.5rem;
+      background: rgba(167, 139, 250, 0.05);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 2rem 0;
+      font-style: italic;
+      color: var(--fg-muted);
+    }
+
+    blockquote strong {
+      color: var(--fg);
+      font-style: normal;
+    }
+
+    /* ============================================
+       Architecture Diagram
+       ============================================ */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--fg-muted);
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .arch-diagram .highlight-purple { color: var(--purple); font-weight: 600; }
+    .arch-diagram .highlight-cyan { color: var(--cyan); font-weight: 600; }
+    .arch-diagram .highlight-emerald { color: var(--emerald); font-weight: 600; }
+
+    /* ============================================
+       Footer
+       ============================================ */
+    footer {
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--fg-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--purple);
+      text-decoration: none;
+    }
+
+    /* ============================================
+       List
+       ============================================ */
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+      color: var(--fg-muted);
+    }
+
+    li strong { color: var(--fg); }
+
+    /* ============================================
+       Accent line
+       ============================================ */
+    .accent-line {
+      width: 60px;
+      height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(to right, var(--purple), var(--cyan));
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <div class="container">
+    <div class="hero">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Case History — March 2026
+      </div>
+      <h1>Building <span class="accent">BrainFlow</span> as a<br>Solo AI Orchestrator</h1>
+      <p>How one web architect used Claude Code skills, agents, and orchestration patterns to build an AI-powered brainstorming canvas with Digital Twins — solo.</p>
+    </div>
+  </div>
+
+  <!-- ============================================
+       1. THE VISION
+       ============================================ -->
+  <div class="container">
+    <section id="vision">
+      <div class="accent-line"></div>
+      <h2>1. The Vision</h2>
+      <p class="section-lead">A case history in AI-augmented development — not replacing teams, but redefining what one person can orchestrate.</p>
+
+      <blockquote>
+        <strong>"Da solo so orchestrare tutto quasi come se fossi un team"</strong> — but the point isn't that AI replaces people. It's that when human creativity directs AI execution, one person can deliver across design, engineering, documentation, and presentation with a consistency that was previously only possible with a coordinated team.
+      </blockquote>
+
+      <h3>What is BrainFlow?</h3>
+      <p>BrainFlow is a canvas-based brainstorming tool where you build visual flows of ideas and let AI synthesize them. Create text notes, concept cards, goal cards, perplexity cards, and <strong>Digital Twins</strong> — AI personas with programmable behaviors (devil's advocate, collaborator, analyst, provocateur). Connect everything to a <strong>Run Flow</strong> node for AI synthesis, then chain the output into new flows for iterative deepening.</p>
+
+      <div class="grid-2">
+        <div class="glass-card">
+          <h4>The Product</h4>
+          <p>Infinite canvas with Digital Twins, multiple card types, glassmorphic UI, real-time AI synthesis, chainable flows, and ambient visual effects.</p>
+          <span class="tag tag-purple">Digital Twins</span>
+          <span class="tag tag-cyan">Brainstorming</span>
+          <span class="tag tag-emerald">Claude AI</span>
+        </div>
+        <div class="glass-card">
+          <h4>The Process</h4>
+          <p>Built using Claude Code with custom skills, specialized agents, and documented orchestration — every decision recorded, every pattern reusable.</p>
+          <span class="tag tag-purple">Skills</span>
+          <span class="tag tag-cyan">Agents</span>
+          <span class="tag tag-slate">Documentation</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================
+       2. THE STACK
+       ============================================ -->
+  <div class="container">
+    <section id="stack">
+      <div class="accent-line"></div>
+      <h2>2. The Stack</h2>
+      <p class="section-lead">Modern tooling, intentional choices. Each dependency earned its place.</p>
+
+      <div class="grid-2">
+        <div class="glass-card">
+          <h4>Framework</h4>
+          <p>Next.js 16.2 (App Router) with React 19 and TypeScript 5 strict mode. Server-side API routes for Claude integration.</p>
+        </div>
+        <div class="glass-card">
+          <h4>Canvas</h4>
+          <p>@xyflow/react 12 (React Flow v12) — node graph system with custom nodes, edges, connection logic, and smart handle positioning.</p>
+        </div>
+        <div class="glass-card">
+          <h4>Styling</h4>
+          <p>Tailwind CSS v4 + shadcn/ui + class-variance-authority. Glassmorphic design system with backdrop-blur, oklch colors, and radius scale.</p>
+        </div>
+        <div class="glass-card">
+          <h4>AI</h4>
+          <p>@anthropic-ai/sdk — Claude API for creative synthesis. Connected nodes are collected and processed through a system prompt tuned for artists.</p>
+        </div>
+      </div>
+
+      <h3>Architecture Diagram</h3>
+      <div class="arch-diagram">
+<span class="highlight-purple">┌─────────────────────────────────────────────┐</span>
+<span class="highlight-purple">│                  Flow Canvas                 │</span>
+<span class="highlight-purple">│                                              │</span>
+<span class="highlight-purple">│  ┌──────┐  ┌──────────┐  ┌───────┐  ┌─────┐│</span>
+<span class="highlight-purple">│  │ Text │──│ Concept  │──│ Image │──│ Run ││</span>
+<span class="highlight-purple">│  │ Node │  │ Card     │  │ Node  │  │ Node││</span>
+<span class="highlight-purple">│  └──────┘  └──────────┘  └───────┘  └──┬──┘│</span>
+<span class="highlight-purple">│                                        │    │</span>
+<span class="highlight-purple">└────────────────────────────────────────┼────┘</span>
+                                         │
+                                         ▼
+<span class="highlight-emerald">               ┌──────────────────┐</span>
+<span class="highlight-emerald">               │   POST /api/run  │</span>
+<span class="highlight-emerald">               │   Claude API     │</span>
+<span class="highlight-emerald">               └──────────────────┘</span>
+                                         │
+                    ┌────────────────────┼───────────────────┐
+                    ▼                    ▼                   ▼
+<span class="highlight-cyan">         ┌──────────────┐  ┌──────────────┐  ┌──────────────┐</span>
+<span class="highlight-cyan">         │ Glassmorphic │  │ Ambient Glow │  │ Result Node  │</span>
+<span class="highlight-cyan">         │ Overlays     │  │ Animation    │  │ Display      │</span>
+<span class="highlight-cyan">         └──────────────┘  └──────────────┘  └──────────────┘</span></div>
+    </section>
+  </div>
+
+  <!-- ============================================
+       3. AI ORCHESTRATION MODEL
+       ============================================ -->
+  <div class="container">
+    <section id="orchestration">
+      <div class="accent-line"></div>
+      <h2>3. The AI Orchestration Model</h2>
+      <p class="section-lead">Six custom skills encode project standards. Agents execute them. The human architect directs.</p>
+
+      <h3>Custom Skills</h3>
+      <p>Each skill is a structured prompt in <code>.claude/skills/</code> that encodes the project's design system, architecture rules, and quality standards. When invoked, the AI agent operates within these constraints — producing consistent results across different sessions and contexts.</p>
+
+      <div class="skill-row">
+        <span class="skill-cmd">/design</span>
+        <span class="skill-desc">Any visual task — logos, palettes, graphics — enforcing the exact design tokens (oklch colors, radius scale, glass effects)</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-cmd">/component</span>
+        <span class="skill-desc">New UI components — runs a pre-flight checklist (shadcn → existing → base-ui → custom) before writing any code</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-cmd">/node</span>
+        <span class="skill-desc">New canvas node types — composes from shared primitives (NodeHandles, NodeHeader, NodeActions, EditableField)</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-cmd">/present</span>
+        <span class="skill-desc">Presentation materials — pitch decks, case studies, marketing pages in the Flow brand voice</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-cmd">/audit</span>
+        <span class="skill-desc">Systematic review — architecture compliance, design system fidelity, code quality, performance, a11y</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-cmd">/document</span>
+        <span class="skill-desc">Decision records — captures why, not just what, in structured ADR format for future reference</span>
+      </div>
+
+      <h3>Why Skills Matter</h3>
+      <p>Without skills, every AI interaction starts from scratch. You explain the design system again. You remind it about shadcn. You re-specify the node composition pattern. Skills encode this knowledge <strong>once</strong> and enforce it <strong>every time</strong>. The result: consistency across days, weeks, and sessions — the kind of consistency that normally requires a team with shared documentation and code review.</p>
+
+      <h3>Agent Orchestration Flow</h3>
+      <div class="arch-diagram">
+<span class="highlight-purple">  Human Architect</span>
+        │
+        │ directs
+        ▼
+  ┌─────────────┐
+  │ Claude Code  │
+  │ (orchestrator)│
+  └──────┬──────┘
+         │ dispatches via skills & agents
+         │
+    ┌────┼────┬────────┬──────────┬──────────┐
+    ▼    ▼    ▼        ▼          ▼          ▼
+<span class="highlight-purple"> /design</span> <span class="highlight-cyan">/component</span> <span class="highlight-emerald">/node</span>  <span class="highlight-purple">/present</span>  <span class="highlight-cyan">/audit</span>  <span class="highlight-emerald">/document</span>
+    │    │    │        │          │          │
+    └────┴────┴────────┴──────────┴──────────┘
+                       │
+                       ▼
+              Consistent Output
+       (design system ∩ architecture rules)</div>
+    </section>
+  </div>
+
+  <!-- ============================================
+       4. DESIGN SYSTEM
+       ============================================ -->
+  <div class="container">
+    <section id="design-system">
+      <div class="accent-line"></div>
+      <h2>4. The Design System</h2>
+      <p class="section-lead">Every color, radius, and shadow is tokenized. The same system powers the app, the docs, and this page.</p>
+
+      <h3>Color Palette</h3>
+      <div class="grid-2">
+        <div class="glass-card" style="border-left: 4px solid #A78BFA;">
+          <h4 style="color: #A78BFA;">Purple — #A78BFA</h4>
+          <p>Primary brand accent. Concept cards, creative elements, primary actions.</p>
+        </div>
+        <div class="glass-card" style="border-left: 4px solid #38BDF8;">
+          <h4 style="color: #38BDF8;">Cyan — #38BDF8</h4>
+          <p>Media and visual elements. Image nodes, technology references.</p>
+        </div>
+        <div class="glass-card" style="border-left: 4px solid #34D399;">
+          <h4 style="color: #34D399;">Emerald — #34D399</h4>
+          <p>AI and success states. Run nodes, confirmations, growth indicators.</p>
+        </div>
+        <div class="glass-card" style="border-left: 4px solid #64748b;">
+          <h4 style="color: #64748b;">Slate — #64748b</h4>
+          <p>Neutral supporting elements. Text nodes, secondary information.</p>
+        </div>
+      </div>
+
+      <h3>Glassmorphism</h3>
+      <p>App overlays (header, prompt bar, toolbars, panels) use a glassmorphic treatment: semi-transparent background, <code>backdrop-blur-2xl</code>, subtle border, and a soft shadow. Canvas nodes are <strong>exempt</strong> — they use solid backgrounds for readability.</p>
+
+      <pre><code>/* Glass overlay formula */
+background: rgba(255, 255, 255, 0.06);  /* dark mode */
+border: 1px solid rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(40px);
+box-shadow: 0 0 15px 0 rgb(0 0 0 / 0.25);
+border-radius: 0.875rem;</code></pre>
+
+      <h3>Typography</h3>
+      <p><strong>Satoshi</strong> for all UI text and headings — a geometric sans-serif with personality. <strong>Geist Mono</strong> for code and technical content. Both chosen for their clarity at small sizes and their modern, slightly warm character.</p>
+    </section>
+  </div>
+
+  <!-- ============================================
+       5. BUILD TIMELINE
+       ============================================ -->
+  <div class="container">
+    <section id="timeline">
+      <div class="accent-line"></div>
+      <h2>5. Build Timeline</h2>
+      <p class="section-lead">Key milestones in the development of Flow, each building on the last.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 1</div>
+          <div class="timeline-title">Canvas Foundation</div>
+          <div class="timeline-desc">React Flow integration, basic node types (text, concept card), edge system with smart handle positioning, infinite canvas with dot pattern background.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 2</div>
+          <div class="timeline-title">AI Integration</div>
+          <div class="timeline-desc">Claude API route, Run node type, graph traversal for collecting connected content, ambient glow animation during processing.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 3</div>
+          <div class="timeline-title">Design System & Polish</div>
+          <div class="timeline-desc">Glassmorphic overlays, oklch color tokens, dark/light themes, Satoshi typography, radius scale, connection mode UX with visual feedback.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 4</div>
+          <div class="timeline-title">Component Library</div>
+          <div class="timeline-desc">Storybook 10 with stories for foundations (colors, icons, spacing, typography), components (buttons, badges, inputs), and tokens (glass morphism, node colors).</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 5 — Current</div>
+          <div class="timeline-title">AI Orchestration Infrastructure</div>
+          <div class="timeline-desc">Claude Code skills, agents, CLAUDE.md, AGENTS.md, memory system, documentation pipeline — the meta-layer that makes solo orchestration sustainable.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================
+       6. LESSONS & PATTERNS
+       ============================================ -->
+  <div class="container">
+    <section id="lessons">
+      <div class="accent-line"></div>
+      <h2>6. Lessons & Reusable Patterns</h2>
+      <p class="section-lead">What worked, what to replicate in future projects.</p>
+
+      <h3>Pattern 1: Encode Standards in Skills, Not Memory</h3>
+      <p>AI memory is useful for preferences, but skills are better for <strong>standards</strong>. A skill runs the same way every time — it doesn't drift, forget, or interpret differently. The <code>/design</code> skill always checks the same color palette. The <code>/component</code> skill always runs the shadcn pre-flight.</p>
+
+      <h3>Pattern 2: Composition Over Configuration</h3>
+      <p>Every canvas node is composed from 4 shared primitives. This isn't about DRY for its own sake — it's about making new node types trivial to create while guaranteeing visual and behavioral consistency. The <code>/node</code> skill encodes this pattern so even an AI agent can't shortcut it.</p>
+
+      <h3>Pattern 3: Glass for Overlays, Solid for Content</h3>
+      <p>The glassmorphism rule is simple but critical: floating UI gets the blur treatment, canvas content stays solid. This preserves readability where it matters (nodes you're editing) while giving the chrome a premium feel. Encoded in the <code>/design</code> and <code>/component</code> skills.</p>
+
+      <h3>Pattern 4: Document the Why, Not the What</h3>
+      <p>Code shows what changed. Git shows when. Documentation should capture <strong>why</strong> — the constraints, trade-offs, and alternatives considered. The <code>/document</code> skill produces ADRs (Architecture Decision Records) that capture this context.</p>
+
+      <h3>Pattern 5: The Human Stays in the Loop</h3>
+      <p>AI orchestration works best when the human makes <strong>creative and architectural decisions</strong> and the AI handles <strong>execution within defined constraints</strong>. Skills define the constraints. The architect directs the work. Neither works well alone.</p>
+    </section>
+  </div>
+
+  <!-- ============================================
+       7. PROJECT STRUCTURE
+       ============================================ -->
+  <div class="container">
+    <section id="structure">
+      <div class="accent-line"></div>
+      <h2>7. Project Structure Reference</h2>
+      <p class="section-lead">Complete file map for orientation.</p>
+
+      <pre><code>flow/
+├── .claude/
+│   ├── settings.local.json          # Permissions
+│   ├── skills/
+│   │   ├── design/SKILL.md          # Design system enforcement
+│   │   ├── component/SKILL.md       # Component creation pipeline
+│   │   ├── node/SKILL.md            # Canvas node builder
+│   │   ├── present/SKILL.md         # Presentation materials
+│   │   ├── audit/SKILL.md           # Quality audit checklist
+│   │   └── document/SKILL.md        # Decision documentation
+│   └── projects/.../memory/
+│       ├── MEMORY.md                 # Memory index
+│       ├── feedback_blur_ui.md       # Glassmorphism rules
+│       ├── feedback_shadcn_first.md  # shadcn-first policy
+│       └── feedback_architecture.md  # Architecture patterns
+├── docs/
+│   ├── case-history.html             # This document
+│   ├── decisions/                    # Architecture Decision Records
+│   └── orchestration/                # Agent workflow documentation
+├── src/
+│   ├── app/                          # Next.js App Router
+│   │   ├── globals.css               # Design tokens + animations
+│   │   ├── layout.tsx                # Root layout
+│   │   ├── page.tsx                  # Canvas page
+│   │   └── api/run/route.ts          # Claude API endpoint
+│   ├── components/
+│   │   ├── canvas/                   # 16 canvas components
+│   │   ├── layout/header.tsx         # App header
+│   │   ├── panels/status-bar.tsx     # Zoom + controls
+│   │   ├── prompt/prompt-bar.tsx     # Input + quick actions
+│   │   └── ui/                       # 9 shadcn components
+│   ├── config/
+│   │   ├── constants.ts              # Tokens + shared classes
+│   │   └── initial-data.ts           # Demo content
+│   ├── hooks/                        # useNodeData, useConnectMode
+│   ├── lib/                          # Utils + node-style helpers
+│   ├── providers/theme-provider.tsx  # Dark/light theme
+│   ├── stories/                      # Storybook stories
+│   └── types/canvas.ts              # TypeScript types
+├── CLAUDE.md                         # Project instructions for AI
+├── AGENTS.md                         # Agent orchestration guide
+└── package.json                      # Dependencies</code></pre>
+    </section>
+  </div>
+
+  <!-- ============================================
+       8. HOW TO REPLICATE
+       ============================================ -->
+  <div class="container">
+    <section id="replicate">
+      <div class="accent-line"></div>
+      <h2>8. How to Replicate This Setup</h2>
+      <p class="section-lead">Step-by-step guide for applying this orchestration model to any project.</p>
+
+      <ol>
+        <li><strong>Start with CLAUDE.md</strong> — Define your tech stack, architecture rules, and design tokens. This is the foundation every AI interaction reads.</li>
+        <li><strong>Create AGENTS.md</strong> — Document the agent roles and orchestration philosophy. This frames how AI should approach work in your project.</li>
+        <li><strong>Build skills incrementally</strong> — Start with <code>/design</code> and <code>/component</code> (the most frequently used). Add more as patterns solidify.</li>
+        <li><strong>Encode standards, not preferences</strong> — Skills should contain hard rules (color tokens, composition patterns). Memory should contain soft preferences (user communication style).</li>
+        <li><strong>Use memory for feedback loops</strong> — When you correct the AI, save it as feedback memory so it doesn't repeat mistakes across sessions.</li>
+        <li><strong>Document decisions as you go</strong> — Use <code>/document</code> to capture why decisions were made. Future-you (and interviewers) will thank you.</li>
+        <li><strong>Audit periodically</strong> — Run <code>/audit</code> to catch drift from the design system and architecture patterns.</li>
+      </ol>
+    </section>
+  </div>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <div class="container">
+    <footer>
+      <p>BrainFlow — Case History | Built with Claude Code orchestration</p>
+      <p style="margin-top: 0.5rem;">Web Architect AI &middot; Creative Frontend Development &middot; March 2026</p>
+    </footer>
+  </div>
+
+</body>
+</html>

@@ -42,7 +42,7 @@ export function PromptBar({ onAddNode, onRunAI, isRunning }: PromptBarProps) {
 
   return (
     <div className="absolute bottom-6 left-1/2 z-50 -translate-x-1/2 w-full max-w-lg px-4">
-      <div className="flex flex-col gap-2 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-2xl shadow-[0_0_15px_0_rgb(0_0_0/0.25)] p-2">
+      <div className="flex flex-col gap-2 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-2xl shadow-[var(--glass-shadow)] p-2">
         {/* Input row */}
         <div className="flex items-center gap-2 px-2">
           <Sparkles className="h-4 w-4 text-muted-foreground shrink-0" />

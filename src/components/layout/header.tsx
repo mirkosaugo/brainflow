@@ -30,11 +30,7 @@ export function Header() {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    document.documentElement.classList.add("theme-transition");
     setTheme(theme === "dark" ? "light" : "dark");
-    setTimeout(() => {
-      document.documentElement.classList.remove("theme-transition");
-    }, 300);
   };
 
   return (
@@ -102,7 +98,7 @@ export function Header() {
       <div className="flex items-center gap-2 pointer-events-auto">
         <Tooltip>
           <TooltipTrigger
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-2xl shadow-[0_0_15px_0_rgb(0_0_0/0.25)] hover:bg-muted transition-colors"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-2xl shadow-[var(--glass-shadow)] hover:bg-muted transition-colors"
             onClick={toggleTheme}
           >
             <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -112,7 +108,7 @@ export function Header() {
           <TooltipContent>Toggle theme</TooltipContent>
         </Tooltip>
 
-        <Avatar className="h-9 w-9 border border-border/15 backdrop-blur-3xl shadow-[0_0_15px_0_rgb(0_0_0/0.25)]">
+        <Avatar className="h-9 w-9 border border-border/15 backdrop-blur-3xl shadow-[var(--glass-shadow)]">
           <AvatarFallback className="text-xs bg-card">U</AvatarFallback>
         </Avatar>
       </div>
