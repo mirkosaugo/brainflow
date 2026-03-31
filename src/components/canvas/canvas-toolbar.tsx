@@ -29,7 +29,11 @@ import {
 import { Button } from "@/components/ui/button";
 import type { ToolMode } from "@/types/canvas";
 import { cn } from "@/lib/utils";
-import { GLASS_CONTAINER_CLASS, ICON_BTN_CLASS, NODE_COLORS } from "@/config/constants";
+import {
+  GLASS_CONTAINER_CLASS,
+  ICON_BTN_CLASS,
+  NODE_COLORS,
+} from "@/config/constants";
 import { FLOW_TEMPLATES, type FlowTemplate } from "@/config/flow-templates";
 
 interface CanvasToolbarProps {
@@ -64,7 +68,14 @@ function getNodeTypeCounts(template: FlowTemplate) {
   return counts;
 }
 
-export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExport, onImport, hasContent }: CanvasToolbarProps) {
+export function CanvasToolbar({
+  activeTool,
+  onToolChange,
+  onLoadTemplate,
+  onExport,
+  onImport,
+  hasContent,
+}: CanvasToolbarProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirming, setConfirming] = useState<FlowTemplate | null>(null);
 
@@ -77,7 +88,7 @@ export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExpo
         setDialogOpen(false);
       }
     },
-    [hasContent, onLoadTemplate]
+    [hasContent, onLoadTemplate],
   );
 
   const handleConfirm = useCallback(() => {
@@ -91,7 +102,9 @@ export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExpo
   return (
     <>
       <div className="absolute right-4 top-1/2 z-40 -translate-y-1/2">
-        <div className={`flex flex-col items-center gap-2 rounded-full p-1.5 ${GLASS_CONTAINER_CLASS}`}>
+        <div
+          className={`flex flex-col items-center gap-2 rounded-full p-1.5 ${GLASS_CONTAINER_CLASS}`}
+        >
           {tools.map((tool) => (
             <Tooltip key={tool.id}>
               <TooltipTrigger
@@ -99,7 +112,7 @@ export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExpo
                   ICON_BTN_CLASS,
                   activeTool === tool.id
                     ? "bg-foreground text-background"
-                    : "text-foreground"
+                    : "text-foreground",
                 )}
                 onClick={() => onToolChange(tool.id)}
               >
@@ -111,7 +124,7 @@ export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExpo
 
           <div className="w-5 border-t border-border/30" />
 
-          <Tooltip>
+          {/* <Tooltip>
             <TooltipTrigger
               className={ICON_BTN_CLASS}
               onClick={() => setDialogOpen(true)}
@@ -141,7 +154,7 @@ export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExpo
               <Upload className="h-5 w-5" />
             </TooltipTrigger>
             <TooltipContent side="left">Import JSON</TooltipContent>
-          </Tooltip>
+          </Tooltip> */}
         </div>
       </div>
 
@@ -151,7 +164,8 @@ export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExpo
           <DialogHeader>
             <DialogTitle>Flow Templates</DialogTitle>
             <DialogDescription>
-              Start from a pre-built structure with goals, twins, and connections.
+              Start from a pre-built structure with goals, twins, and
+              connections.
             </DialogDescription>
           </DialogHeader>
 
@@ -165,8 +179,12 @@ export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExpo
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-semibold text-foreground">{template.name}</h4>
-                      <p className="text-xs text-muted-foreground mt-0.5">{template.description}</p>
+                      <h4 className="text-sm font-semibold text-foreground">
+                        {template.name}
+                      </h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {template.description}
+                      </p>
                       <div className="flex flex-wrap gap-2 mt-2.5">
                         {Object.entries(counts).map(([type, count]) => {
                           const meta = NODE_TYPE_ICONS[type];
@@ -176,7 +194,10 @@ export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExpo
                             <span
                               key={type}
                               className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium"
-                              style={{ background: `${meta.color}15`, color: meta.color }}
+                              style={{
+                                background: `${meta.color}15`,
+                                color: meta.color,
+                              }}
                             >
                               <Icon className="h-3 w-3" />
                               {count}
@@ -205,7 +226,11 @@ export function CanvasToolbar({ activeTool, onToolChange, onLoadTemplate, onExpo
                 This will replace the current canvas. Continue?
               </p>
               <div className="flex gap-2 justify-end">
-                <Button size="xs" variant="ghost" onClick={() => setConfirming(null)}>
+                <Button
+                  size="xs"
+                  variant="ghost"
+                  onClick={() => setConfirming(null)}
+                >
                   Cancel
                 </Button>
                 <Button size="xs" onClick={handleConfirm}>
