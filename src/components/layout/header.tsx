@@ -46,10 +46,7 @@ export function Header() {
           <DropdownMenuTrigger className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted/50 transition-colors outline-none">
             <Menu className="h-5 w-5" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            sideOffset={8}
-            className="w-64 rounded-2xl p-2"
-          >
+          <DropdownMenuContent sideOffset={8} className="w-64 rounded-2xl p-2">
             <DropdownMenuItem className="gap-3 rounded-xl px-3 py-2.5 text-sm">
               <ChevronLeft className="h-4 w-4" />
               Go to all projects
@@ -91,7 +88,7 @@ export function Header() {
         </DropdownMenu>
 
         <h1 className="text-base font-semibold font-heading">
-          Flow — Idea Board
+          StudyFlow — Greek Mythology Project
         </h1>
       </div>
 
