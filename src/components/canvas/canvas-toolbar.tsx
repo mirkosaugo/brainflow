@@ -111,7 +111,7 @@ export function CanvasToolbar({
                 className={cn(
                   ICON_BTN_CLASS,
                   activeTool === tool.id
-                    ? "bg-foreground text-background"
+                    ? "bg-foreground text-background hover:text-white"
                     : "text-foreground",
                 )}
                 onClick={() => onToolChange(tool.id)}
