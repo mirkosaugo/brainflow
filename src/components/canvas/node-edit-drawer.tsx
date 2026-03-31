@@ -10,6 +10,7 @@ import {
   Bot,
   ImagePlus,
   Play,
+  Sparkles,
   X,
   Plus,
   Trash2,
@@ -35,6 +36,7 @@ import type {
   DigitalTwinData,
   ImageUploadData,
   RunNodeData,
+  SynthesisOutputData,
 } from "@/types/canvas";
 
 const NODE_META: Record<
@@ -48,6 +50,7 @@ const NODE_META: Record<
   digitalTwin: { icon: Bot, label: "Digital Twin", color: NODE_COLORS.digitalTwin },
   imageUpload: { icon: ImagePlus, label: "Image", color: NODE_COLORS.imageUpload },
   run: { icon: Play, label: "Run Node", color: NODE_COLORS.run },
+  synthesisOutput: { icon: Sparkles, label: "Generated", color: NODE_COLORS.run },
 };
 
 const PRIORITY_OPTIONS: { value: GoalCardData["priority"]; label: string; color: string }[] = [
@@ -57,10 +60,10 @@ const PRIORITY_OPTIONS: { value: GoalCardData["priority"]; label: string; color:
 ];
 
 const TWIN_MODES: { id: DigitalTwinData["mode"]; label: string; color: string }[] = [
-  { id: "contraddici", label: "Contraddici", color: "#FF6B9D" },
-  { id: "collabora", label: "Collabora", color: "#34D399" },
-  { id: "analizza", label: "Analizza", color: "#FBBF24" },
-  { id: "provoca", label: "Provoca", color: "#A78BFA" },
+  { id: "contraddici", label: "Challenge", color: "#FF6B9D" },
+  { id: "collabora", label: "Collaborate", color: "#34D399" },
+  { id: "analizza", label: "Analyze", color: "#FBBF24" },
+  { id: "provoca", label: "Provoke", color: "#A78BFA" },
 ];
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
@@ -480,6 +483,38 @@ function RunForm({
   );
 }
 
+function SynthesisForm({
+  data,
+  onChange,
+}: {
+  data: SynthesisOutputData;
+  onChange: (patch: Partial<SynthesisOutputData>) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <FieldLabel>Label</FieldLabel>
+        <FieldInput
+          value={data.label}
+          onChange={(label) => onChange({ label })}
+          placeholder="Card label..."
+          autoFocus
+        />
+      </div>
+      <div>
+        <FieldLabel>Synthesis</FieldLabel>
+        <FieldInput
+          value={data.synthesis}
+          onChange={(synthesis) => onChange({ synthesis })}
+          placeholder="Generated content..."
+          multiline
+        />
+      </div>
+      <ColorField value={data.color} onChange={(color) => onChange({ color })} />
+    </div>
+  );
+}
+
 // --- Main drawer ---
 
 export function NodeEditDrawer() {
@@ -549,7 +584,7 @@ export function NodeEditDrawer() {
   }, [editingNodeId, deleteElements, closeEditor]);
 
   const Icon = meta?.icon ?? Type;
-  const color = meta?.color ?? NODE_COLORS.text;
+  const color = (draft as { color?: string }).color ?? meta?.color ?? NODE_COLORS.text;
 
   return (
     <Sheet open={!!editingNodeId} onOpenChange={(open) => { if (!open) handleCancel(); }}>
@@ -600,6 +635,9 @@ export function NodeEditDrawer() {
                   .map((n) => (n.data as unknown as RunNodeData).color)
               }
             />
+          )}
+          {activeNodeType === "synthesisOutput" && (
+            <SynthesisForm data={draft as unknown as SynthesisOutputData} onChange={patchDraft} />
           )}
         </div>
 

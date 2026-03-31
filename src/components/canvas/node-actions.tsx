@@ -16,9 +16,10 @@ interface NodeActionsProps {
   /** @deprecated Use drawer-based editing via context instead */
   onEdit?: () => void;
   hideEdit?: boolean;
+  children?: React.ReactNode;
 }
 
-export function NodeActions({ nodeId, onEdit, hideEdit }: NodeActionsProps) {
+export function NodeActions({ nodeId, onEdit, hideEdit, children }: NodeActionsProps) {
   const { deleteElements } = useReactFlow();
   const { openEditor } = useNodeEditor();
 
@@ -41,6 +42,8 @@ export function NodeActions({ nodeId, onEdit, hideEdit }: NodeActionsProps) {
             <TooltipContent side="right">Edit</TooltipContent>
           </Tooltip>
         )}
+
+        {children}
 
         <Tooltip>
           <TooltipTrigger

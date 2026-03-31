@@ -7,37 +7,37 @@ const anthropic = new Anthropic({
 
 const MODE_INSTRUCTIONS: Record<string, string> = {
   contraddici:
-    "Sfida ogni assunzione, trova i punti deboli, fai il devil's advocate. Sii diretto e provocatorio nelle critiche.",
+    "Challenge every assumption, find weaknesses, play devil's advocate. Be direct and provocative in your critiques.",
   collabora:
-    "Espandi le idee, trova connessioni inaspettate, proponi sviluppi concreti. Sii costruttivo e generativo.",
+    "Expand on ideas, find unexpected connections, propose concrete developments. Be constructive and generative.",
   analizza:
-    "Analisi critica strutturata: trova gap logici, evidenzia contraddizioni, valuta fattibilità. Sii preciso e metodico.",
+    "Structured critical analysis: find logical gaps, highlight contradictions, assess feasibility. Be precise and methodical.",
   provoca:
-    "Reframe radicale: ipotesi estreme, domande scomode, prospettive controintuitive. Spingi il pensiero oltre i limiti.",
+    "Radical reframe: extreme hypotheses, uncomfortable questions, counterintuitive perspectives. Push thinking beyond limits.",
 };
 
-const SYSTEM_PROMPT = `Sei un facilitatore strategico. Il tuo compito è sintetizzare un brainstorming board e produrre output strutturato e actionable.
+const SYSTEM_PROMPT = `You are a strategic facilitator. Your task is to synthesize a brainstorming board and produce structured, actionable output.
 
-Rispondi SEMPRE nel seguente formato JSON:
+ALWAYS respond in the following JSON format:
 
 {
-  "synthesis": "Sintesi narrativa coesa di tutte le idee (2-4 paragrafi)",
+  "synthesis": "Cohesive narrative synthesis of all ideas (2-4 paragraphs)",
   "conflicts": [
-    { "between": "Nodo A vs Nodo B", "tension": "Descrizione del conflitto o tensione" }
+    { "between": "Node A vs Node B", "tension": "Description of the conflict or tension" }
   ],
   "openQuestions": [
-    { "question": "Domanda irrisolta", "isBlocking": true, "suggestedApproach": "Come esplorarla" }
+    { "question": "Unresolved question", "isBlocking": true, "suggestedApproach": "How to explore it" }
   ],
   "nextSteps": [
-    { "action": "Azione concreta", "priority": "high", "rationale": "Perché questa" }
+    { "action": "Concrete action", "priority": "high", "rationale": "Why this action" }
   ],
-  "goalAlignment": "Se ci sono Goal Card: valutazione di quanto le idee siano allineate agli obiettivi"
+  "goalAlignment": "If Goal Cards are present: assessment of how well ideas align with objectives"
 }
 
-Se una sezione non è applicabile (es. nessun conflitto trovato), usa array vuoto [].
-Se non ci sono Goal Card, ometti goalAlignment.
-Sii specifico e diretto. Evita genericità.
-Rispondi SOLO con il JSON, senza markdown code fences o altro testo.`;
+If a section is not applicable (e.g., no conflicts found), use an empty array [].
+If there are no Goal Cards, omit goalAlignment.
+Be specific and direct. Avoid generalities.
+Respond ONLY with JSON, no markdown code fences or other text.`;
 
 function buildSemanticPrompt(inputs: NodeInput[]): string {
   const goals = inputs.filter((i) => i.role === "goal");
@@ -50,15 +50,15 @@ function buildSemanticPrompt(inputs: NodeInput[]): string {
 
   const sections: string[] = [];
 
-  sections.push("Analizza il seguente brainstorming board:");
+  sections.push("Analyze the following brainstorming board:");
 
   if (goals.length > 0) {
     sections.push(
-      "OBIETTIVI:\n" +
+      "OBJECTIVES:\n" +
         goals
           .map((g) => {
             let line = `- ${g.content}`;
-            if (g.metadata?.priority) line += ` [priorità: ${g.metadata.priority}]`;
+            if (g.metadata?.priority) line += ` [priority: ${g.metadata.priority}]`;
             if (g.metadata?.timeframe) line += ` [timeframe: ${g.metadata.timeframe}]`;
             return line;
           })
@@ -68,7 +68,7 @@ function buildSemanticPrompt(inputs: NodeInput[]): string {
 
   if (ideas.length > 0) {
     sections.push(
-      "IDEE E CONCETTI:\n" +
+      "IDEAS AND CONCEPTS:\n" +
         ideas
           .map((i) => {
             let line = `- ${i.content}`;
@@ -81,12 +81,12 @@ function buildSemanticPrompt(inputs: NodeInput[]): string {
 
   if (questions.length > 0) {
     sections.push(
-      "DOMANDE APERTE:\n" +
+      "OPEN QUESTIONS:\n" +
         questions
           .map((q) => {
             let line = `- ${q.content}`;
             if (q.metadata?.isBlocking === "true") line += " ⚠ BLOCKING";
-            if (q.metadata?.context) line += ` (contesto: ${q.metadata.context})`;
+            if (q.metadata?.context) line += ` (context: ${q.metadata.context})`;
             return line;
           })
           .join("\n")
@@ -95,9 +95,9 @@ function buildSemanticPrompt(inputs: NodeInput[]): string {
 
   if (previousOutputs.length > 0) {
     sections.push(
-      "ELABORAZIONI PRECEDENTI (output di Run Flow precedenti):\n" +
-        "Questi sono output di sessioni di brainstorming precedenti. " +
-        "Usali come contesto consolidato, non come semplice input da riassumere di nuovo.\n" +
+      "PREVIOUS ELABORATIONS (output from previous Run Flows):\n" +
+        "These are outputs from previous brainstorming sessions. " +
+        "Use them as consolidated context, not as simple input to summarize again.\n" +
         previousOutputs.map((p) => `- ${p.content}`).join("\n\n")
     );
   }
@@ -105,35 +105,35 @@ function buildSemanticPrompt(inputs: NodeInput[]): string {
   if (context.length > 0 || evidence.length > 0) {
     const items = [...context, ...evidence];
     sections.push(
-      "CONTESTO E EVIDENZE:\n" + items.map((c) => `- ${c.content}`).join("\n")
+      "CONTEXT AND EVIDENCE:\n" + items.map((c) => `- ${c.content}`).join("\n")
     );
   }
 
   if (perspectives.length > 0) {
     sections.push(
-      "PROSPETTIVE DEI DIGITAL TWINS:\n" +
-        "Per ciascun Digital Twin presente, genera una risposta IN CHARACTER seguendo rigorosamente il suo mode.\n" +
+      "DIGITAL TWINS PERSPECTIVES:\n" +
+        "For each Digital Twin present, generate a response IN CHARACTER strictly following their mode.\n" +
         perspectives
           .map((p) => {
             const mode = p.metadata?.mode || "collabora";
             const instruction = MODE_INSTRUCTIONS[mode] || MODE_INSTRUCTIONS.collabora;
             let line = `- ${p.content}: ${instruction}`;
-            if (p.metadata?.personality) line += ` Personalità: ${p.metadata.personality}.`;
+            if (p.metadata?.personality) line += ` Personality: ${p.metadata.personality}.`;
             return line;
           })
           .join("\n")
     );
 
     sections.push(
-      "IMPORTANTE: Dopo il JSON principale, genera una sezione separata per ogni Digital Twin.\n" +
-        "Formatta ciascuna risposta twin così:\n" +
+      "IMPORTANT: After the main JSON, generate a separate section for each Digital Twin.\n" +
+        "Format each twin response like this:\n" +
         perspectives
           .map(
             (p) =>
-              `===TWIN:${p.nodeId}===\n[La risposta in character del twin ${p.content}]\n===END_TWIN===`
+              `===TWIN:${p.nodeId}===\n[The in-character response from twin ${p.content}]\n===END_TWIN===`
           )
           .join("\n") +
-        "\nOgni twin deve rispondere IN CHARACTER al contenuto del board, seguendo il proprio mode."
+        "\nEach twin must respond IN CHARACTER to the board content, following their own mode."
     );
   }
 
@@ -168,7 +168,6 @@ function parseTwinResponses(
 }
 
 function parseStructuredOutput(text: string): { structured: StructuredOutput | null; raw: string } {
-  // Try to extract JSON from the text (handle potential markdown fences)
   let jsonStr = text.trim();
   const fenceMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (fenceMatch) {
@@ -186,7 +185,6 @@ function parseStructuredOutput(text: string): { structured: StructuredOutput | n
     };
     return { structured, raw: structured.synthesis };
   } catch {
-    // If JSON parsing fails, return raw text
     return { structured: null, raw: text };
   }
 }
@@ -222,7 +220,6 @@ export async function POST(request: Request) {
     const textBlock = message.content.find((b) => b.type === "text");
     const rawText = textBlock ? textBlock.text : "No result generated";
 
-    // Separate twin responses from main output
     let mainText = rawText;
     let twinResponses: Record<string, string> = {};
 
@@ -232,7 +229,6 @@ export async function POST(request: Request) {
       twinResponses = parsed.twinResponses;
     }
 
-    // Parse structured JSON from main text
     const { structured, raw } = parseStructuredOutput(mainText);
 
     return Response.json({

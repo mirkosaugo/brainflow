@@ -10,10 +10,10 @@ import { NodeActions } from "./node-actions";
 import { NodeHeader } from "./node-header";
 
 const MODES = [
-  { id: "contraddici" as const, label: "Contraddici", color: "#FF6B9D" },
-  { id: "collabora" as const, label: "Collabora", color: "#34D399" },
-  { id: "analizza" as const, label: "Analizza", color: "#FBBF24" },
-  { id: "provoca" as const, label: "Provoca", color: "#A78BFA" },
+  { id: "contraddici" as const, label: "Challenge", color: "#FF6B9D" },
+  { id: "collabora" as const, label: "Collaborate", color: "#34D399" },
+  { id: "analizza" as const, label: "Analyze", color: "#FBBF24" },
+  { id: "provoca" as const, label: "Provoke", color: "#A78BFA" },
 ] as const;
 
 function DigitalTwinNodeComponent({ id, data, selected }: NodeProps) {
@@ -32,7 +32,7 @@ function DigitalTwinNodeComponent({ id, data, selected }: NodeProps) {
       {/* Name */}
       <div className="px-4 pt-3 pb-1">
         <p className="text-sm font-semibold text-foreground">
-          {nodeData.name || <span className="text-muted-foreground/40 italic">Nome del twin...</span>}
+          {nodeData.name || <span className="text-muted-foreground/40 italic">Twin name...</span>}
         </p>
       </div>
 
@@ -78,7 +78,7 @@ function DigitalTwinNodeComponent({ id, data, selected }: NodeProps) {
             </div>
           ) : (
             <p className="text-xs text-muted-foreground/40 italic">
-              Il twin risponderà al Run Flow...
+              The twin will respond on Run Flow...
             </p>
           )}
         </div>

@@ -135,7 +135,7 @@ export function CanvasToolbar({
           </Tooltip>
           */}
 
-          {/* <Tooltip>
+          <Tooltip>
             <TooltipTrigger className={ICON_BTN_CLASS} onClick={onExport}>
               <Download className="h-5 w-5" />
             </TooltipTrigger>
@@ -147,7 +147,7 @@ export function CanvasToolbar({
               <Upload className="h-5 w-5" />
             </TooltipTrigger>
             <TooltipContent side="left">Import JSON</TooltipContent>
-          </Tooltip> */}
+          </Tooltip>
         </div>
       </div>
 

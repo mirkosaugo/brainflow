@@ -28,7 +28,7 @@ function PerplexityCardNodeComponent({ id, data, selected }: NodeProps) {
       {/* Question */}
       <div className="px-4 pt-3 pb-2">
         <p className="text-sm font-medium text-foreground">
-          {nodeData.question || <span className="text-muted-foreground/40 italic">Cosa non sai ancora?</span>}
+          {nodeData.question || <span className="text-muted-foreground/40 italic">What don't you know yet?</span>}
         </p>
       </div>
 

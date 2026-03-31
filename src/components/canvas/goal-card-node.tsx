@@ -38,7 +38,7 @@ function GoalCardNodeComponent({ id, data, selected }: NodeProps) {
       {/* Title */}
       <div className="px-4 pt-3 pb-1">
         <p className="text-sm font-semibold text-foreground">
-          {nodeData.title || <span className="text-muted-foreground/40 italic">Obiettivo principale</span>}
+          {nodeData.title || <span className="text-muted-foreground/40 italic">Main objective</span>}
         </p>
       </div>
 

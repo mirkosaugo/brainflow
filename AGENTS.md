@@ -11,11 +11,12 @@ This project is designed to be operated by a single developer (Mirko) orchestrat
 ## Product Context
 
 **BrainFlow** is a canvas-based brainstorming tool with:
-- Visual node graph for connecting ideas
-- **Digital Twins** — AI personas with programmable behaviors (contraddici, collabora, analizza, provoca)
-- Multiple card types: text, concept, goal, perplexity, images
-- **Run Flow** node that synthesizes connected elements via Claude AI
-- Chainable flows — output of one Run Flow feeds into another
+- **Color-based grouping** — nodes are grouped by selectable color (not edges); same color = same synthesis group
+- **Digital Twins** — AI personas with programmable behaviors (contraddici, collabora, analizza, provoca) that respond in-character during synthesis
+- **8 node types** — text, concept card, goal card, perplexity card, image, digital twin, run node, synthesis output
+- **Run by Color** — select a color, hit Generate → all nodes of that color are synthesized into a structured output (synthesis, conflicts, open questions, next steps, goal alignment)
+- **Smart Create** — natural language node generation via `/api/smart-create`
+- **Node editing** — drawer-based editor with color picker for all node types
 
 ## Agent Roles
 
@@ -31,7 +32,7 @@ This project is designed to be operated by a single developer (Mirko) orchestrat
 **When:** Creating new UI components. Follows shadcn-first + glassmorphism rules automatically.
 
 ### Node Builder (via `/node` skill)
-**When:** Adding new canvas node types (goal cards, perplexity cards, digital twins). Composes from shared primitives.
+**When:** Adding new canvas node types. Composes from shared primitives (NodeHandles, NodeHeader, NodeActions, EditableField). All current types (text, concept, goal, perplexity, digital twin, image, run, synthesis output) are built.
 
 ### Presenter (via `/present` skill)
 **When:** Generating pitch decks, case study pages, marketing materials for BrainFlow.
@@ -58,7 +59,7 @@ Each skill encodes the project's standards so the AI agents produce work that's 
 ## Conversation Context
 
 When Mirko opens BrainFlow with Claude (including Cowork), the AI should:
-- Know the full product vision (Digital Twins, card types, Run Flow, chaining)
+- Know the current product state: all 8 node types built, color-based grouping (no edges), Run by Color synthesis, Digital Twins with in-canvas responses, Smart Create, structured synthesis output
 - Be ready to discuss strategy, market research, UX, technical implementation
 - Use the appropriate skill when the conversation turns into action
 - Maintain the case-history documentation mindset (document interesting decisions)
