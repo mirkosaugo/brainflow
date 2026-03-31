@@ -108,7 +108,7 @@ function FlowCanvasInner() {
   const [editingNodeId, setEditingNodeId] = useState<string | null>(null);
   const [isNewNode, setIsNewNode] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const { zoomIn, zoomOut, fitView, screenToFlowPosition } = useReactFlow();
+  const { zoomIn, zoomOut, fitView, screenToFlowPosition, getNodes } = useReactFlow();
   const viewport = useViewport();
   const { save, exportJSON, importJSON } = useCanvasStorage();
 
@@ -157,25 +157,26 @@ function FlowCanvasInner() {
     [],
   );
 
+  const getColorColumnBottom = useCallback(
+    (color: string) => {
+      const siblings = getNodes().filter((n) => (n.data as { color?: string }).color === color);
+      if (siblings.length === 0) return screenToFlowPosition({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+      const bottom = siblings.reduce((a, b) => (b.position.y > a.position.y ? b : a));
+      return { x: bottom.position.x, y: bottom.position.y + 250 };
+    },
+    [getNodes, screenToFlowPosition],
+  );
+
   const handleAddNode = useCallback(
     (type: "text" | "conceptCard" | "imageUpload" | "goalCard" | "perplexityCard" | "digitalTwin") => {
-      const center = screenToFlowPosition({
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2 - 100,
-      });
-      const offset = { x: (Math.random() - 0.5) * 200, y: (Math.random() - 0.5) * 150 };
+      const id = nextId();
+      const newData = buildNodeData(type);
+      const pos = getColorColumnBottom((newData as { color?: string }).color!);
 
-      const newNode: CanvasNode = {
-        id: nextId(),
-        type,
-        position: { x: center.x + offset.x, y: center.y + offset.y },
-        data: buildNodeData(type),
-      } as CanvasNode;
-
-      setNodes((nds) => [...nds, newNode]);
-      requestAnimationFrame(() => openEditor(newNode.id, true));
+      setNodes((nds) => [...nds, { id, type, position: pos, data: newData } as CanvasNode]);
+      requestAnimationFrame(() => openEditor(id, true));
     },
-    [screenToFlowPosition, setNodes, openEditor],
+    [getColorColumnBottom, setNodes, openEditor],
   );
 
   const handleSmartCreate = useCallback(
@@ -192,21 +193,10 @@ function FlowCanvasInner() {
       const defaults = buildNodeData(nodeType) as Record<string, unknown>;
       const mergedData = { ...defaults, ...data };
 
-      const center = screenToFlowPosition({
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2 - 100,
-      });
-
-      const newNode: CanvasNode = {
-        id: nextId(),
-        type: nodeType,
-        position: { x: center.x, y: center.y },
-        data: mergedData,
-      } as CanvasNode;
-
-      setNodes((nds) => [...nds, newNode]);
+      const pos = getColorColumnBottom((mergedData as { color?: string }).color!);
+      setNodes((nds) => [...nds, { id: nextId(), type: nodeType, position: pos, data: mergedData } as CanvasNode]);
     },
-    [screenToFlowPosition, setNodes],
+    [getColorColumnBottom, setNodes],
   );
 
   // Generate synthesis for all nodes of a given color
@@ -259,14 +249,12 @@ function FlowCanvasInner() {
           );
         }
 
-        // Find rightmost node of this color to position synthesis next to it
-        const maxX = Math.max(...colorNodes.map((n) => n.position.x));
-        const avgY = colorNodes.reduce((sum, n) => sum + n.position.y, 0) / colorNodes.length;
+        const pos = getColorColumnBottom(color);
 
         const newNode: CanvasNode = {
           id: nextId(),
           type: "synthesisOutput",
-          position: { x: maxX + 350, y: avgY },
+          position: pos,
           data: {
             sourceRunNodeId: "",
             synthesis,
@@ -295,7 +283,7 @@ function FlowCanvasInner() {
 
       setIsRunning(false);
     },
-    [nodes, setNodes],
+    [nodes, setNodes, getColorColumnBottom],
   );
 
   const handleLoadTemplate = useCallback(
