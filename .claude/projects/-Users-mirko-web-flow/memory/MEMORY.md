@@ -1,5 +1,0 @@
-- [user_profile.md](user_profile.md) — Mirko is a web architect AI with creative frontend background, builds SymposiumAI as case history for solo AI orchestration
-- [project_orchestration_setup.md](project_orchestration_setup.md) — SymposiumAI: brainstorming canvas with Digital Twins, 6 skills, full orchestration infra (2026-03-24)
-- [feedback_blur_ui.md](feedback_blur_ui.md) — All app UI overlays must use backdrop-blur glassmorphism; canvas nodes are exempt
-- [feedback_shadcn_first.md](feedback_shadcn_first.md) — Always check shadcn ecosystem and docs before building any UI component or page
-- [feedback_architecture.md](feedback_architecture.md) — Always use shared utils/hooks/components, keep app well-organized for scalability

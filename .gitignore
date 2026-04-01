@@ -22,6 +22,8 @@
 
 # misc
 .DS_Store
+.claude/projects/
+.claude/.DS_Store
 *.pem
 
 # debug
