@@ -1,70 +1,84 @@
-# BrainFlow — AI-Powered Brainstorming Canvas
+# SymposiumAI — AI-Powered Thinking Canvas
 
 @AGENTS.md
 
-## What is BrainFlow
+## What is SymposiumAI
 
-BrainFlow is a canvas-based brainstorming tool where you organize ideas by color and let AI synthesize them. The core loop:
+SymposiumAI is a canvas-based structured thinking tool. You place ideas on a spatial canvas, group them by color, and use AI-powered Digital Twins to challenge, analyze, and debate your thinking before generating a final synthesis.
 
-1. **Create elements on the canvas** — text notes, concept cards, goal cards, perplexity cards, images, and **Digital Twins** (AI personas with programmable mood/behavior)
-2. **Group by color** — each node has a selectable color; nodes sharing a color form a logical group
-3. **Run by Color** — select a color from the prompt bar and hit "Generate" to synthesize all nodes of that color
-4. **Get structured AI output** — BrainFlow produces a `SynthesisOutput` node with organized sections: synthesis narrative, conflicts, open questions, next steps, and goal alignment
-5. **Digital Twins respond in-character** — any twin in the color group generates its own response based on its behavior mode
+### The Core Loop
+
+1. **Create content cards** — text notes, concept cards, goal cards, open questions, images
+2. **Group by color** — each card has a selectable color; same color = same topic/theme
+3. **Think** — each Digital Twin individually analyzes the content cards of its color and generates an in-character opinion
+4. **Debate** — when 2+ twins have opinions, they debate each other in turns, producing a Debate Output card
+5. **Synthesize** — all content cards + the debate output are synthesized into a structured Synthesis Output (conflicts, open questions, next steps, goal alignment)
+
+Each step produces visible output on the canvas. The user controls when to trigger each action.
 
 ### Digital Twins
-The distinctive feature: AI personas that live on the canvas and participate in synthesis. Each twin has a programmable behavior mode:
-- **Contraddici** — challenges and pushes back on ideas (devil's advocate)
-- **Collabora** — builds on ideas, suggests expansions
-- **Analizza** — breaks down ideas critically, finds gaps
-- **Provoca** — provocative, pushes thinking to extremes
 
-When a "Run by Color" synthesis includes Digital Twins, each twin generates an **in-character response** that appears directly inside the twin node on canvas. The API uses `===TWIN:nodeId===` markers to parse individual responses. This creates a simulated team dynamic — multiple perspectives from programmable AI agents, all visible on the canvas.
+AI personas that live on the canvas. Each twin has a name, a personality, and a behavior mode:
+
+| Mode | Label | Behavior |
+|------|-------|----------|
+| `contraddici` | Challenge | Devil's advocate — finds weaknesses, pushes back |
+| `collabora` | Collaborate | Builds on ideas, finds connections, proposes developments |
+| `analizza` | Analyze | Logical analysis — finds gaps, assesses feasibility |
+| `provoca` | Provoke | Radical reframes, uncomfortable questions, breaks paradigms |
+
+**Think** — triggered per-twin via the BrainCircuit button on the card. The twin reads all content cards (text, concept, goal, question, image) of its same color and generates an opinion based on its mode and personality. The response appears inside the twin card.
+
+**Debate** — triggered via the prompt bar (MessageSquare button). Requires 2+ twins of the same color that have already generated a Think response. Twins take turns responding to each other sequentially. Each twin sees what previous twins said. Produces a **Debate Output** card in the color column.
 
 ### Canvas Elements
-| Element | Purpose |
-|---------|---------|
-| Text Node | Free-form text notes |
-| Concept Card | Structured idea (title, description, tags) |
-| Image Node | Visual reference with caption |
-| Goal Card | Define objectives/targets (criteria, timeframe, priority) |
-| Perplexity Card | Open questions, doubts, unknowns (context, blocking flag) |
-| Digital Twin | AI persona with behavior mode and in-canvas responses |
-| Run Node | Manual synthesis trigger (color-based) |
-| Synthesis Output | Auto-generated structured output from Run by Color |
 
-### Smart Create
-The prompt bar supports **AI-powered node generation**: type a natural language description and the `/api/smart-create` endpoint determines the best node type and generates rich content (title, tags, description, etc.) using Claude Sonnet.
+| Element | Type Key | Purpose |
+|---------|----------|---------|
+| Text Node | `text` | Free-form text notes |
+| Concept Card | `conceptCard` | Structured idea (title, description, tags) |
+| Image Node | `imageUpload` | Visual reference with caption |
+| Goal Card | `goalCard` | Objectives/targets (criteria, timeframe, priority) |
+| Open Question | `perplexityCard` | Questions, doubts, unknowns (context, blocking flag) |
+| Digital Twin | `digitalTwin` | AI persona with behavior mode and in-canvas responses |
+| Debate Output | `debateOutput` | Auto-generated transcript from twin debate |
+| Synthesis Output | `synthesisOutput` | Auto-generated structured synthesis |
+
+### Three Actions
+
+| Action | Trigger | Input | Output |
+|--------|---------|-------|--------|
+| **Think** | BrainCircuit button on twin card | Content cards of same color | Twin's `lastResponse` updated in-place |
+| **Debate** | MessageSquare in prompt bar → pick color | Twin opinions + content cards | Debate Output card + updated twin responses |
+| **Synthesize** | Sparkles in prompt bar → pick color | Content cards + Debate Output (if exists) | Synthesis Output card |
 
 ### Color-Based Grouping
-Instead of edges/connections, BrainFlow uses **color as the semantic link** between nodes:
+
+Instead of edges/connections, SymposiumAI uses **color as the semantic link**:
 - Every node has a **selectable color** (not tied to its type)
 - Each node type has a default color (`NODE_COLORS` in constants), but users can change it freely via the node edit drawer
-- "Run by Color" synthesizes all nodes sharing a color into a `SynthesisOutput`
-- Run nodes can also be assigned a color; other Run nodes' colors are disabled to prevent duplicates
+- Color pills in the filter bar can be labeled (hover → pencil icon → edit)
+- Synthesis Output cards can be reassigned to a different color, feeding into another group's synthesis
 
-### Structured Synthesis Output
-The `/api/run` endpoint returns a `StructuredOutput` with organized sections:
-- **synthesis** — narrative summary of the color group
-- **conflicts** — tensions and contradictions between ideas
-- **openQuestions** — unresolved points worth exploring
-- **nextSteps** — actionable recommendations with priority levels
-- **goalAlignment** — optional assessment of how ideas align with goals
+### Smart Create
 
-### Use Cases
-- **Solo brainstorming** — externalize ideas, group by color, get structured AI synthesis
-- **Market research** — perplexity cards with questions + research nodes, same color → synthesize findings
-- **Product ideation** — goal cards + concept cards + devil's advocate twin, all same color → refined ideas
-- **Decision making** — map pros/cons with collaborating and contradicting twins in the same color group
-- **Creative writing** — narrative elements as nodes, twins as character voices
-- **Strategic planning** — goals + constraints + multiple twin perspectives → action plan
+The prompt bar supports **AI-powered node generation**: type a natural language description and `/api/smart-create` determines the best node type and generates rich content using Claude Sonnet.
+
+### API Endpoints
+
+| Endpoint | Purpose |
+|----------|---------|
+| `/api/run` | Synthesize content cards → structured JSON output (synthesis, conflicts, openQuestions, nextSteps, goalAlignment) |
+| `/api/twin` | Single twin generates opinion from board context |
+| `/api/debate` | Multiple twins debate in sequential turns |
+| `/api/smart-create` | AI determines node type and generates content from natural language |
 
 ## Tech Stack
 
 - **Next.js 16.2** (App Router) + **React 19** + **TypeScript 5**
 - **@xyflow/react 12** (React Flow v12) — canvas/node graph
 - **Tailwind CSS v4** + **shadcn/ui** + **class-variance-authority**
-- **@anthropic-ai/sdk** — Claude API for AI synthesis and Digital Twins
+- **@anthropic-ai/sdk** — Claude API (Sonnet) for all AI features
 - **Storybook 10** — component documentation
 - **Vitest + Playwright** — testing
 
@@ -75,6 +89,7 @@ The `/api/run` endpoint returns a `StructuredOutput` with organized sections:
 3. **Shared utilities:** Reuse `src/config/constants.ts`, `src/lib/node-style.ts`, hooks in `src/hooks/`.
 4. **Glassmorphism:** All app overlays (header, prompt bar, status bar, toolbars) use `GLASS_CONTAINER_CLASS` with `backdrop-blur`. Canvas nodes are **exempt** — they use `--node-bg`.
 5. **Node composition:** New node types = `NodeHandles` + `NodeActions` + `NodeHeader` + `EditableField` + style utilities.
+6. **All UI text in English.**
 
 ## Design System Tokens
 
@@ -98,6 +113,14 @@ Colors are **selectable per node** via the edit drawer's `ColorSwatchPicker`. Th
 | Perplexity Card | Rose | `#FF6B9D` |
 | Digital Twin | Indigo | `#818CF8` |
 
+### Twin Mode Colors (pastel, distinct from node colors)
+| Mode | Color |
+|------|-------|
+| Challenge | `#F9A8D4` |
+| Collaborate | `#86EFAC` |
+| Analyze | `#FDE68A` |
+| Provoke | `#C4B5FD` |
+
 ### Typography
 - **Sans/Heading:** Satoshi (Fontshare)
 - **Mono:** Geist Mono
@@ -110,14 +133,15 @@ Base `--radius: 0.875rem`, scaled via `--radius-sm` through `--radius-4xl`.
 ```
 src/
 ├── app/              # Next.js App Router (layout, page, API routes)
+│   └── api/          # run/, twin/, debate/, smart-create/
 ├── components/
 │   ├── canvas/       # Node components, toolbar, color filter bar, edit drawer
 │   ├── layout/       # Header
 │   ├── panels/       # Status bar
 │   ├── prompt/       # Prompt input bar
 │   └── ui/           # shadcn components
-├── config/           # Constants, initial demo data
-├── hooks/            # useNodeData
+├── config/           # Constants, initial demo data, flow templates
+├── hooks/            # useNodeData, useNodeEditor, useCanvasActions, useCanvasStorage
 ├── lib/              # Utils, node-style helpers
 ├── providers/        # Theme provider
 ├── stories/          # Storybook stories
@@ -139,11 +163,10 @@ This project includes custom Claude Code skills in `.claude/skills/`:
 
 ## Context for Conversations
 
-When working on BrainFlow, you have full context to discuss:
+When working on SymposiumAI, you have full context to discuss:
 - **Product strategy** — features, roadmap, user experience decisions
-- **Market research** — competitors, positioning, target audience
-- **Technical architecture** — how to implement new node types, AI integration patterns
+- **Technical architecture** — node types, AI integration patterns, API design
 - **Design** — visual identity, UX patterns, accessibility
 - **Business** — pitch materials, case studies, documentation
 
-This is a portfolio/case-history project by Mirko, a web architect AI with creative frontend background. The project demonstrates solo AI orchestration — one person directing AI agents across design, engineering, docs, and presentation.
+This is a portfolio/case-history project by Mirko, a web architect with creative frontend background. The project demonstrates solo AI orchestration — one person directing AI agents across design, engineering, docs, and presentation.

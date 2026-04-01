@@ -22,18 +22,21 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
 function useGradientId(prefix: string, colors: string[]) {
-  const id = `${prefix}-${colors.join("-").replace(/#/g, "")}`;
-  return id;
+  return `${prefix}-${colors.join("-").replace(/#/g, "")}`;
 }
 
-function GradientDefs({ id, colors }: { id: string; colors: string[] }) {
+function GradientDefs({ id, colors, animate }: { id: string; colors: string[]; animate?: boolean }) {
   if (colors.length === 0) return null;
   return (
     <svg width="0" height="0" className="absolute">
       <defs>
         <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="100%">
           {colors.map((c, i) => (
-            <stop key={c} offset={`${(i / Math.max(colors.length - 1, 1)) * 100}%`} stopColor={c} />
+            <stop key={c} offset={`${(i / Math.max(colors.length - 1, 1)) * 100}%`} stopColor={c}>
+              {animate && (
+                <animate attributeName="stop-color" values={`${c};${colors[(i + 1) % colors.length]};${c}`} dur="2s" repeatCount="indefinite" />
+              )}
+            </stop>
           ))}
         </linearGradient>
       </defs>
@@ -54,9 +57,10 @@ interface PromptBarProps {
   onSmartCreate: (prompt: string) => Promise<void>;
   onRunByColor: (color: string) => Promise<void>;
   onDebate: (color: string) => Promise<void>;
-  isRunning: boolean;
+  runningAction: "idle" | "synthesize" | "debate";
   availableColors: string[];
   debateColors: string[];
+  twinPairColors: string[];
 }
 
 const nodeActions = [
@@ -68,9 +72,10 @@ const nodeActions = [
   { type: "imageUpload" as const, icon: ImagePlus, label: "Image" },
 ];
 
-export function PromptBar({ onAddNode, onSmartCreate, onRunByColor, onDebate, isRunning, availableColors, debateColors }: PromptBarProps) {
+export function PromptBar({ onAddNode, onSmartCreate, onRunByColor, onDebate, runningAction, availableColors, debateColors, twinPairColors }: PromptBarProps) {
+  const isRunning = runningAction !== "idle";
   const synthGradientId = useGradientId("synth", availableColors);
-  const debateGradientId = useGradientId("debate", debateColors);
+  const debateGradientId = useGradientId("debate", twinPairColors);
   const [promptText, setPromptText] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const [showSynthesizeMenu, setShowSynthesizeMenu] = useState(false);
@@ -171,23 +176,18 @@ export function PromptBar({ onAddNode, onSmartCreate, onRunByColor, onDebate, is
 
           {/* Synthesize by color */}
           <div className="relative" ref={synthesizeRef}>
-            <GradientDefs id={synthGradientId} colors={availableColors} />
+            <GradientDefs id={synthGradientId} colors={availableColors} animate={runningAction === "synthesize"} />
             <Tooltip>
               <TooltipTrigger
                 className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-full transition-colors cursor-pointer active:scale-95",
-                  isRunning ? "text-amber-400" : "hover:bg-muted",
+                  "flex h-8 w-8 items-center justify-center rounded-full transition-colors active:scale-95",
+                  isRunning ? "cursor-not-allowed opacity-40" : "cursor-pointer hover:bg-muted",
                 )}
                 onClick={() => { if (!isRunning) { setShowSynthesizeMenu((v) => !v); setShowDebateMenu(false); } }}
-                disabled={isRunning}
               >
-                {isRunning ? (
-                  <div className="h-5 w-5 rounded-full border-2 border-amber-400 border-t-transparent animate-spin" />
-                ) : (
-                  <Sparkles className="h-5 w-5" style={availableColors.length > 0 ? { stroke: `url(#${synthGradientId})` } : undefined} />
-                )}
+                <Sparkles className="h-5 w-5" style={availableColors.length > 0 ? { stroke: `url(#${synthGradientId})` } : undefined} />
               </TooltipTrigger>
-              <TooltipContent>Synthesize</TooltipContent>
+              <TooltipContent>{runningAction === "synthesize" ? "Synthesizing..." : "Synthesize"}</TooltipContent>
             </Tooltip>
 
             {showSynthesizeMenu && (
@@ -211,19 +211,27 @@ export function PromptBar({ onAddNode, onSmartCreate, onRunByColor, onDebate, is
 
           {/* Debate by color */}
           <div className="relative" ref={debateRef}>
-            <GradientDefs id={debateGradientId} colors={debateColors} />
+            <GradientDefs id={debateGradientId} colors={twinPairColors} animate={runningAction === "debate"} />
             <Tooltip>
               <TooltipTrigger
                 className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-full transition-colors cursor-pointer active:scale-95",
-                  isRunning ? "text-amber-400" : debateColors.length === 0 ? "text-muted-foreground/30 cursor-not-allowed" : "hover:bg-muted",
+                  "flex h-8 w-8 items-center justify-center rounded-full transition-colors active:scale-95",
+                  isRunning ? "cursor-not-allowed opacity-40"
+                    : debateColors.length === 0 ? "text-muted-foreground/30 cursor-not-allowed"
+                    : "cursor-pointer hover:bg-muted",
                 )}
                 onClick={() => { if (!isRunning && debateColors.length > 0) { setShowDebateMenu((v) => !v); setShowSynthesizeMenu(false); } }}
-                disabled={isRunning || debateColors.length === 0}
               >
                 <MessageSquare className="h-5 w-5" style={debateColors.length > 0 ? { stroke: `url(#${debateGradientId})` } : undefined} />
               </TooltipTrigger>
-              <TooltipContent>{debateColors.length === 0 ? "Debate (needs 2+ twins of same color)" : "Debate"}</TooltipContent>
+              <TooltipContent>
+                {runningAction === "debate" ? "Debating..."
+                  : debateColors.length === 0
+                    ? twinPairColors.length === 0
+                      ? "Debate (needs 2+ twins of same color)"
+                      : "Debate (twins must Think first)"
+                    : "Debate"}
+              </TooltipContent>
             </Tooltip>
 
             {showDebateMenu && (

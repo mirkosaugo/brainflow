@@ -21,6 +21,7 @@ import type {
   GoalCardData,
   PerplexityCardData,
   DigitalTwinData,
+  DebateOutputData,
   NodeInput,
 } from "@/types/canvas";
 import { initialNodes, initialColorLabels } from "@/config/initial-data";
@@ -28,6 +29,7 @@ import { NODE_COLORS, SNAP_GRID } from "@/config/constants";
 import { loadCanvas, useCanvasStorage } from "@/hooks/use-canvas-storage";
 import type { ColorLabels } from "@/hooks/use-canvas-storage";
 import { NodeEditorContext } from "@/hooks/use-node-editor";
+import { CanvasActionsContext } from "@/hooks/use-canvas-actions";
 import { NodeEditDrawer } from "./node-edit-drawer";
 import { TextNodeComponent_ } from "./text-node";
 import { ConceptCardNodeComponent_ } from "./concept-card-node";
@@ -36,6 +38,7 @@ import { GoalCardNodeComponent_ } from "./goal-card-node";
 import { PerplexityCardNodeComponent_ } from "./perplexity-card-node";
 import { DigitalTwinNodeComponent_ } from "./digital-twin-node";
 import { SynthesisOutputNodeComponent_ } from "./synthesis-output-node";
+import { DebateOutputNodeComponent_ } from "./debate-output-node";
 import { AmbientGlow } from "./ambient-glow";
 import { DotGlowBackground } from "./dot-glow-background";
 import { CanvasToolbar } from "./canvas-toolbar";
@@ -105,7 +108,7 @@ function nodeToInput(node: CanvasNode): NodeInput | null {
 function FlowCanvasInner() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [activeTool, setActiveTool] = useState<ToolMode>("select");
-  const [isRunning, setIsRunning] = useState(false);
+  const [runningAction, setRunningAction] = useState<"idle" | "synthesize" | "debate">("idle");
   const [editingNodeId, setEditingNodeId] = useState<string | null>(null);
   const [isNewNode, setIsNewNode] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -156,6 +159,7 @@ function FlowCanvasInner() {
       perplexityCard: PerplexityCardNodeComponent_,
       digitalTwin: DigitalTwinNodeComponent_,
       synthesisOutput: SynthesisOutputNodeComponent_,
+      debateOutput: DebateOutputNodeComponent_,
     }),
     [],
   );
@@ -202,43 +206,90 @@ function FlowCanvasInner() {
     [getColorColumnBottom, setNodes],
   );
 
-  // Generate synthesis for all nodes of a given color, then run each twin separately
-  const handleRunByColor = useCallback(
-    async (color: string) => {
-      const colorNodes = nodes.filter((n) => {
-        if (n.type === "synthesisOutput") return false;
-        const c = (n.data as { color?: string }).color;
-        return c === color;
-      });
+  // Think: a single twin generates its opinion based on same-color content cards
+  const handleThinkTwin = useCallback(
+    async (twinNodeId: string) => {
+      const twinNode = nodes.find((n) => n.id === twinNodeId);
+      if (!twinNode || twinNode.type !== "digitalTwin") return;
 
-      const inputs = colorNodes.map(nodeToInput).filter(Boolean) as NodeInput[];
+      const d = twinNode.data as unknown as DigitalTwinData;
+      const color = d.color;
+
+      // Collect content cards of the same color (no twins, no synthesis, no debate, no run)
+      const contentTypes = new Set(["text", "conceptCard", "imageUpload", "goalCard", "perplexityCard"]);
+      const contentNodes = nodes.filter((n) => contentTypes.has(n.type!) && (n.data as { color?: string }).color === color);
+      const inputs = contentNodes.map(nodeToInput).filter(Boolean) as NodeInput[];
       if (inputs.length === 0) return;
 
-      setIsRunning(true);
+      const boardContext = inputs.map((i) => `[${i.role.toUpperCase()}] ${i.content}`).join("\n");
 
-      // Identify twin nodes
-      const twinNodes = colorNodes.filter((n) => n.type === "digitalTwin");
-      const twinNodeIds = twinNodes.map((n) => n.id);
+      // Set twin to thinking
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === twinNodeId
+            ? { ...n, data: { ...n.data, status: "thinking", lastResponse: "" } as DigitalTwinData } as CanvasNode
+            : n
+        ),
+      );
 
-      // Set twins to thinking
-      if (twinNodeIds.length > 0) {
+      try {
+        const res = await fetch("/api/twin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: d.name || "Unnamed",
+            mode: d.mode,
+            personality: d.personality,
+            synthesis: "",
+            boardContext,
+          }),
+        });
+
+        if (!res.ok) throw new Error(`Twin API error: ${res.status}`);
+        const json = await res.json();
+
         setNodes((nds) =>
           nds.map((n) =>
-            twinNodeIds.includes(n.id)
-              ? { ...n, data: { ...n.data, status: "thinking", lastResponse: "" } as DigitalTwinData } as CanvasNode
+            n.id === twinNodeId
+              ? { ...n, data: { ...n.data, status: "done", lastResponse: json.response } as DigitalTwinData } as CanvasNode
+              : n
+          ),
+        );
+      } catch (err) {
+        console.error("Think failed:", err);
+        setNodes((nds) =>
+          nds.map((n) =>
+            n.id === twinNodeId
+              ? { ...n, data: { ...n.data, status: "idle" } as DigitalTwinData } as CanvasNode
               : n
           ),
         );
       }
+    },
+    [nodes, setNodes],
+  );
 
-      // Build board context string for twin calls
-      const boardContext = inputs
-        .filter((i) => i.nodeType !== "digitalTwin")
-        .map((i) => `[${i.role.toUpperCase()}] ${i.content}`)
-        .join("\n");
+  // Synthesize: content cards + debate output of a color → structured synthesis
+  const handleRunByColor = useCallback(
+    async (color: string) => {
+      // Content types + debateOutput (which feeds into synthesis)
+      const inputTypes = new Set(["text", "conceptCard", "imageUpload", "goalCard", "perplexityCard", "debateOutput"]);
+      const contentNodes = nodes.filter((n) => inputTypes.has(n.type!) && (n.data as { color?: string }).color === color);
+
+      const inputs: NodeInput[] = contentNodes.map((n) => {
+        if (n.type === "debateOutput") {
+          const dd = n.data as unknown as DebateOutputData;
+          const transcript = dd.transcript.map((t) => `${t.name}: ${t.text}`).join("\n\n");
+          return { nodeId: n.id, nodeType: "debateOutput", role: "context" as const, content: `[DEBATE TRANSCRIPT]\n${transcript}` };
+        }
+        return nodeToInput(n);
+      }).filter(Boolean) as NodeInput[];
+
+      if (inputs.length === 0) return;
+
+      setRunningAction("synthesize");
 
       try {
-        // Step 1: Generate synthesis
         const res = await fetch("/api/run", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -249,8 +300,8 @@ function FlowCanvasInner() {
 
         const json = await res.json();
         const synthesis = json.result || "No result";
+        const title = json.title || "";
 
-        // Create synthesis output node
         const pos = getColorColumnBottom(color);
         const newNode: CanvasNode = {
           id: nextId(),
@@ -258,105 +309,59 @@ function FlowCanvasInner() {
           position: pos,
           data: {
             sourceRunNodeId: "",
+            title,
             synthesis,
             timestamp: Date.now(),
-            label: "Generated",
+            label: "Synthesis",
             color,
           },
         } as CanvasNode;
         setNodes((nds) => [...nds, newNode]);
-
-        // Step 2: Run each twin in parallel with the synthesis as context
-        if (twinNodes.length > 0) {
-          const twinPromises = twinNodes.map(async (twinNode) => {
-            const d = twinNode.data as unknown as DigitalTwinData;
-            try {
-              const twinRes = await fetch("/api/twin", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  name: d.name || "Unnamed",
-                  mode: d.mode,
-                  personality: d.personality,
-                  synthesis,
-                  boardContext,
-                }),
-              });
-
-              if (!twinRes.ok) throw new Error(`Twin API error: ${twinRes.status}`);
-              const twinJson = await twinRes.json();
-
-              // Update this twin's response as soon as it arrives
-              setNodes((nds) =>
-                nds.map((n) =>
-                  n.id === twinNode.id
-                    ? { ...n, data: { ...n.data, status: "done", lastResponse: twinJson.response } as DigitalTwinData } as CanvasNode
-                    : n
-                ),
-              );
-            } catch (err) {
-              console.error(`Twin ${d.name} failed:`, err);
-              setNodes((nds) =>
-                nds.map((n) =>
-                  n.id === twinNode.id
-                    ? { ...n, data: { ...n.data, status: "idle" } as DigitalTwinData } as CanvasNode
-                    : n
-                ),
-              );
-            }
-          });
-
-          await Promise.all(twinPromises);
-        }
       } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        console.error("Run by color failed:", message);
-
-        // Reset twins
-        if (twinNodeIds.length > 0) {
-          setNodes((nds) =>
-            nds.map((n) =>
-              twinNodeIds.includes(n.id)
-                ? { ...n, data: { ...n.data, status: "idle" } as DigitalTwinData } as CanvasNode
-                : n
-            ),
-          );
-        }
+        console.error("Synthesize failed:", err);
       }
 
-      setIsRunning(false);
+      setRunningAction("idle");
     },
     [nodes, setNodes, getColorColumnBottom],
   );
 
-  // Debate: twins of a given color discuss with each other in turns
+  // Debate: twins with responses discuss in turns, then create a Debate Output card
   const handleDebate = useCallback(
     async (color: string) => {
-      const colorNodes = nodes.filter((n) => {
-        if (n.type === "synthesisOutput") return false;
-        const c = (n.data as { color?: string }).color;
-        return c === color;
+      // Only twins that have already generated a response
+      const twinNodes = nodes.filter((n) => {
+        if (n.type !== "digitalTwin") return false;
+        const d = n.data as unknown as DigitalTwinData;
+        return d.color === color && d.lastResponse;
       });
-
-      const twinNodes = colorNodes.filter((n) => n.type === "digitalTwin");
       if (twinNodes.length < 2) return;
 
       const twinNodeIds = twinNodes.map((n) => n.id);
 
-      setIsRunning(true);
+      setRunningAction("debate");
 
-      // Set twins to thinking
+      // Set twins to debating (keep lastResponse for context)
       setNodes((nds) =>
         nds.map((n) =>
           twinNodeIds.includes(n.id)
-            ? { ...n, data: { ...n.data, status: "thinking", lastResponse: "" } as DigitalTwinData } as CanvasNode
+            ? { ...n, data: { ...n.data, status: "debating" } as DigitalTwinData } as CanvasNode
             : n
         ),
       );
 
-      // Build board context from non-twin nodes
-      const inputs = colorNodes.filter((n) => n.type !== "digitalTwin").map(nodeToInput).filter(Boolean) as NodeInput[];
-      const boardContext = inputs.map((i) => `[${i.role.toUpperCase()}] ${i.content}`).join("\n");
+      // Build board context from content cards + twin opinions
+      const contentTypes = new Set(["text", "conceptCard", "imageUpload", "goalCard", "perplexityCard"]);
+      const contentNodes = nodes.filter((n) => contentTypes.has(n.type!) && (n.data as { color?: string }).color === color);
+      const inputs = contentNodes.map(nodeToInput).filter(Boolean) as NodeInput[];
+      const boardLines = inputs.map((i) => `[${i.role.toUpperCase()}] ${i.content}`);
+
+      // Include each twin's prior opinion
+      for (const tn of twinNodes) {
+        const d = tn.data as unknown as DigitalTwinData;
+        boardLines.push(`[OPINION - ${d.name}] ${d.lastResponse}`);
+      }
+      const boardContext = boardLines.join("\n");
 
       const twins = twinNodes.map((n) => {
         const d = n.data as unknown as DigitalTwinData;
@@ -373,7 +378,9 @@ function FlowCanvasInner() {
         if (!res.ok) throw new Error(`Debate API error: ${res.status}`);
         const json = await res.json();
         const responses: Record<string, string> = json.responses || {};
+        const transcript: Array<{ name: string; text: string }> = json.transcript || [];
 
+        // Update twin responses
         setNodes((nds) =>
           nds.map((n) =>
             responses[n.id]
@@ -381,6 +388,22 @@ function FlowCanvasInner() {
               : n
           ),
         );
+
+        // Create Debate Output card
+        const pos = getColorColumnBottom(color);
+        const debateNode: CanvasNode = {
+          id: nextId(),
+          type: "debateOutput",
+          position: pos,
+          data: {
+            transcript: transcript.map((t) => ({ name: t.name, text: t.text })),
+            summary: transcript.map((t) => `${t.name}: ${t.text}`).join("\n\n"),
+            timestamp: Date.now(),
+            label: "Debate",
+            color,
+          },
+        } as CanvasNode;
+        setNodes((nds) => [...nds, debateNode]);
       } catch (err) {
         console.error("Debate failed:", err);
         setNodes((nds) =>
@@ -392,9 +415,9 @@ function FlowCanvasInner() {
         );
       }
 
-      setIsRunning(false);
+      setRunningAction("idle");
     },
-    [nodes, setNodes],
+    [nodes, setNodes, getColorColumnBottom],
   );
 
   const handleLoadTemplate = useCallback(
@@ -428,15 +451,30 @@ function FlowCanvasInner() {
     return Array.from(set);
   }, [nodes]);
 
-  // Colors that have 2+ twins (eligible for debate)
-  const debateColors = useMemo(() => {
-    const twinCountByColor = new Map<string, number>();
+  // Colors that have 2+ twins (for gradient display)
+  const twinPairColors = useMemo(() => {
+    const countByColor = new Map<string, number>();
     for (const n of nodes) {
       if (n.type !== "digitalTwin") continue;
       const c = (n.data as { color?: string }).color;
-      if (c) twinCountByColor.set(c, (twinCountByColor.get(c) || 0) + 1);
+      if (c) countByColor.set(c, (countByColor.get(c) || 0) + 1);
     }
-    return Array.from(twinCountByColor.entries())
+    return Array.from(countByColor.entries())
+      .filter(([, count]) => count >= 2)
+      .map(([hex]) => hex);
+  }, [nodes]);
+
+  // Colors that have 2+ twins with a generated response (eligible for debate click)
+  const debateColors = useMemo(() => {
+    const readyByColor = new Map<string, number>();
+    for (const n of nodes) {
+      if (n.type !== "digitalTwin") continue;
+      const d = n.data as unknown as DigitalTwinData;
+      if (d.lastResponse) {
+        readyByColor.set(d.color, (readyByColor.get(d.color) || 0) + 1);
+      }
+    }
+    return Array.from(readyByColor.entries())
       .filter(([, count]) => count >= 2)
       .map(([hex]) => hex);
   }, [nodes]);
@@ -446,7 +484,13 @@ function FlowCanvasInner() {
     [editingNodeId, isNewNode, openEditor, closeEditor],
   );
 
+  const canvasActionsValue = useMemo(
+    () => ({ onThinkTwin: handleThinkTwin }),
+    [handleThinkTwin],
+  );
+
   return (
+    <CanvasActionsContext value={canvasActionsValue}>
     <NodeEditorContext value={nodeEditorValue}>
       <div className="relative h-full w-full">
         <ReactFlow
@@ -478,7 +522,7 @@ function FlowCanvasInner() {
           <DotGlowBackground />
         </ReactFlow>
 
-        <AmbientGlow active={isRunning} />
+        <AmbientGlow active={runningAction !== "idle"} />
 
         {/* Overlays */}
         <ColorFilterBar nodes={nodes} colorLabels={colorLabels} onColorLabelChange={(hex, label) => setColorLabels((prev) => ({ ...prev, [hex]: label }))} />
@@ -495,9 +539,10 @@ function FlowCanvasInner() {
           onSmartCreate={handleSmartCreate}
           onRunByColor={handleRunByColor}
           onDebate={handleDebate}
-          isRunning={isRunning}
+          runningAction={runningAction}
           availableColors={availableColors}
           debateColors={debateColors}
+          twinPairColors={twinPairColors}
         />
         <StatusBar
           zoom={viewport.zoom}
@@ -508,6 +553,7 @@ function FlowCanvasInner() {
         <NodeEditDrawer />
       </div>
     </NodeEditorContext>
+    </CanvasActionsContext>
   );
 }
 

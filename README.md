@@ -1,57 +1,58 @@
-# Flow — Idea Board
+# SymposiumAI
 
-A canvas-based brainstorming app built with React Flow for artists and creatives. Connect text, concepts, images, and AI processing nodes to develop your ideas visually.
+AI-powered thinking canvas where ideas meet structured debate.
 
-## Features
+## How it works
 
-- **Text Nodes** — Free-form text for quick notes and ideas
-- **Concept Cards** — Structured cards with title, description, and tags
-- **Image Upload** — Drag & drop or click to upload visual references
-- **Run Nodes** — Connect your content and process it with Claude AI to synthesize creative outputs
-- **Full connectivity** — All node types can be linked to each other
-- **Dark/Light theme** — Glassmorphic UI with theme support
+Place content cards on a canvas and group them by color. Each color is a topic. Add Digital Twins — AI personas with distinct thinking styles — to challenge, analyze, and debate your ideas.
 
-## Getting Started
+### The flow
 
-### Prerequisites
+```
+Content Cards → Think → Debate → Synthesize
+```
 
-- Node.js 18+
-- An [Anthropic API key](https://console.anthropic.com/)
+1. **Content cards** — text notes, concept cards, goals, open questions, images. Assign them a color to group by topic.
 
-### Installation
+2. **Think** — each Digital Twin reads the content cards of its color and generates an individual opinion. Triggered per-twin via the brain icon on the card.
+
+3. **Debate** — when 2+ twins have opinions, they debate each other in turns. Each twin responds to what the previous one said. Produces a Debate Output card.
+
+4. **Synthesize** — takes all content cards + the Debate Output and generates a structured synthesis: narrative, conflicts, open questions, next steps, and goal alignment.
+
+### Digital Twins
+
+AI personas with programmable behavior:
+
+- **Challenge** — devil's advocate, finds weaknesses
+- **Collaborate** — builds on ideas, finds connections
+- **Analyze** — logical gaps, feasibility assessment
+- **Provoke** — radical reframes, uncomfortable questions
+
+Each twin has a custom name and personality. In the demo, Greek gods debate the fate of Olympus.
+
+### Smart Create
+
+Type a natural language description in the prompt bar and AI generates the right card type with rich content.
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org/) + React 19 + TypeScript
+- [@xyflow/react 12](https://reactflow.dev/) (React Flow) for the canvas
+- [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- [Anthropic SDK](https://docs.anthropic.com/) — Claude API for all AI features
+- [Lucide Icons](https://lucide.dev/)
+
+## Getting started
 
 ```bash
 npm install
-```
-
-### Environment
-
-Create a `.env` file in the project root:
-
-```
-ANTHROPIC_API_KEY=your-api-key-here
-```
-
-### Run
-
-```bash
+cp .env.example .env.local  # add ANTHROPIC_API_KEY
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). Clear localStorage to see the demo canvas.
 
-## Usage
+## Project
 
-1. Use the **prompt bar** at the bottom to type ideas (press Enter to create a text node) or click the icons to add nodes
-2. **Double click** any text field on a node to edit it
-3. **Drag from handles** (dots on node edges) to connect nodes together
-4. Connect content nodes to a **Run node**, then press the **sparkle button** in the prompt bar to process everything with AI
-5. Delete nodes/edges by selecting them and pressing Backspace
-
-## Tech Stack
-
-- [Next.js 16](https://nextjs.org/) + React 19
-- [XY Flow (React Flow)](https://reactflow.dev/) for the canvas
-- [Anthropic SDK](https://docs.anthropic.com/) for AI processing
-- [Tailwind CSS v4](https://tailwindcss.com/)
-- [Lucide Icons](https://lucide.dev/)
+Side project by Mirko — a portfolio piece demonstrating AI-orchestrated development. One person, full stack, AI agents as the team.

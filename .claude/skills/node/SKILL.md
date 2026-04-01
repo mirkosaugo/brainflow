@@ -1,13 +1,13 @@
 ---
 name: node
-description: Create a new canvas node type for BrainFlow, composing from shared primitives (NodeHandles, NodeHeader, NodeActions, EditableField)
+description: Create a new canvas node type for SymposiumAI, composing from shared primitives (NodeHandles, NodeHeader, NodeActions, EditableField)
 ---
 
 # Canvas Node Builder
 
-Create a new node type for the BrainFlow canvas.
+Create a new node type for the SymposiumAI canvas.
 
-## BrainFlow Node Types (current + planned)
+## SymposiumAI Node Types (current + planned)
 - **Text** — free-form notes (built)
 - **Concept Card** — structured idea with title, description, tags (built)
 - **Image** — visual reference (built)

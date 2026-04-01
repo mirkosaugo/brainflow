@@ -3,7 +3,7 @@ import type { ColorLabels } from "@/hooks/use-canvas-storage";
 import { NODE_COLORS } from "./constants";
 
 const COL = { olympus: 0, wisdom: 500, war: 1000, diplomacy: 1500 };
-const ROW = { r0: 0, r1: 220, r2: 440, r3: 660, r4: 880 };
+const ROW = { r0: 0, r1: 220, r2: 440, r3: 680, r4: 1000 };
 
 export const initialNodes: CanvasNode[] = [
   // ── Column 1 — Amber: The Grand Question ──────────────────────

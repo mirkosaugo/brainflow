@@ -4,17 +4,20 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
-# Agent Orchestration Guide — BrainFlow
+# Agent Orchestration Guide — SymposiumAI
 
 This project is designed to be operated by a single developer (Mirko) orchestrating AI agents as a full team. The following agent patterns are used:
 
 ## Product Context
 
-**BrainFlow** is a canvas-based brainstorming tool with:
-- **Color-based grouping** — nodes are grouped by selectable color (not edges); same color = same synthesis group
-- **Digital Twins** — AI personas with programmable behaviors (contraddici, collabora, analizza, provoca) that respond in-character during synthesis
-- **8 node types** — text, concept card, goal card, perplexity card, image, digital twin, run node, synthesis output
-- **Run by Color** — select a color, hit Generate → all nodes of that color are synthesized into a structured output (synthesis, conflicts, open questions, next steps, goal alignment)
+**SymposiumAI** is a canvas-based structured thinking tool with:
+- **Color-based grouping** — nodes grouped by selectable color (not edges); same color = same topic
+- **Digital Twins** — AI personas with programmable behaviors (Challenge, Collaborate, Analyze, Provoke) that think independently and debate each other
+- **9 node types** — text, concept card, goal card, open question, image, digital twin, debate output, synthesis output, run node
+- **Three-step AI flow:**
+  1. **Think** — each twin individually analyzes content cards of its color
+  2. **Debate** — twins with opinions debate sequentially, producing a Debate Output card
+  3. **Synthesize** — content cards + debate output → structured Synthesis Output
 - **Smart Create** — natural language node generation via `/api/smart-create`
 - **Node editing** — drawer-based editor with color picker for all node types
 
@@ -32,10 +35,10 @@ This project is designed to be operated by a single developer (Mirko) orchestrat
 **When:** Creating new UI components. Follows shadcn-first + glassmorphism rules automatically.
 
 ### Node Builder (via `/node` skill)
-**When:** Adding new canvas node types. Composes from shared primitives (NodeHandles, NodeHeader, NodeActions, EditableField). All current types (text, concept, goal, perplexity, digital twin, image, run, synthesis output) are built.
+**When:** Adding new canvas node types. Composes from shared primitives (NodeHandles, NodeHeader, NodeActions, EditableField). All current types are built.
 
 ### Presenter (via `/present` skill)
-**When:** Generating pitch decks, case study pages, marketing materials for BrainFlow.
+**When:** Generating pitch decks, case study pages, marketing materials for SymposiumAI.
 
 ### Auditor (via `/audit` skill)
 **When:** Reviewing architecture, performance, accessibility, code quality.
@@ -58,8 +61,8 @@ Each skill encodes the project's standards so the AI agents produce work that's 
 
 ## Conversation Context
 
-When Mirko opens BrainFlow with Claude (including Cowork), the AI should:
-- Know the current product state: all 8 node types built, color-based grouping (no edges), Run by Color synthesis, Digital Twins with in-canvas responses, Smart Create, structured synthesis output
+When Mirko opens SymposiumAI with Claude (including Cowork), the AI should:
+- Know the current product state: 9 node types, color-based grouping, Think/Debate/Synthesize flow, Digital Twins with individual Think + group Debate, Smart Create, structured outputs
 - Be ready to discuss strategy, market research, UX, technical implementation
 - Use the appropriate skill when the conversation turns into action
 - Maintain the case-history documentation mindset (document interesting decisions)

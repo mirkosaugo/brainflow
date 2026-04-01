@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Flow – AI Canvas",
+  title: "SymposiumAI",
   description: "An AI-powered canvas for building and iterating on ideas",
 };
 
@@ -33,9 +33,7 @@ export default function RootLayout({
       </head>
       <body className="h-full flex flex-col font-sans">
         <ThemeProvider>
-          <TooltipProvider>
-            {children}
-          </TooltipProvider>
+          <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

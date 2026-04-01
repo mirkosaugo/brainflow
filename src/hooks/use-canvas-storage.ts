@@ -2,7 +2,7 @@ import { useCallback, useRef } from "react";
 import type { CanvasNode } from "@/types/canvas";
 import { initialNodes, initialColorLabels } from "@/config/initial-data";
 
-const STORAGE_KEY = "brainflow-canvas";
+const STORAGE_KEY = "symposiumai-canvas";
 
 /**
  * Serializable canvas state stored in localStorage.
@@ -69,7 +69,7 @@ export function useCanvasStorage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `brainflow-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `symposiumai-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }, []);

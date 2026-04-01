@@ -56,13 +56,22 @@ export interface DigitalTwinData extends Record<string, unknown> {
   mode: "contraddici" | "collabora" | "analizza" | "provoca";
   personality: string;
   lastResponse: string;
-  status: "idle" | "thinking" | "done";
+  status: "idle" | "thinking" | "debating" | "done";
   color: string;
 }
 
 export interface SynthesisOutputData extends Record<string, unknown> {
   sourceRunNodeId: string;
+  title: string;
   synthesis: string;
+  timestamp: number;
+  label: string;
+  color: string;
+}
+
+export interface DebateOutputData extends Record<string, unknown> {
+  transcript: Array<{ name: string; text: string }>;
+  summary: string;
   timestamp: number;
   label: string;
   color: string;
@@ -78,8 +87,9 @@ export type GoalCardNode = Node<GoalCardData, "goalCard">;
 export type PerplexityCardNode = Node<PerplexityCardData, "perplexityCard">;
 export type DigitalTwinNode = Node<DigitalTwinData, "digitalTwin">;
 export type SynthesisOutputNode = Node<SynthesisOutputData, "synthesisOutput">;
+export type DebateOutputNode = Node<DebateOutputData, "debateOutput">;
 
-export type CanvasNode = TextNode | ConceptCardNode | ImageUploadNode | RunNode | GoalCardNode | PerplexityCardNode | DigitalTwinNode | SynthesisOutputNode;
+export type CanvasNode = TextNode | ConceptCardNode | ImageUploadNode | RunNode | GoalCardNode | PerplexityCardNode | DigitalTwinNode | SynthesisOutputNode | DebateOutputNode;
 export type CanvasEdge = Edge;
 
 export type ToolMode = "select" | "hand";

@@ -23,7 +23,14 @@ function SynthesisOutputNodeComponent({ id, data, selected }: NodeProps) {
         <NodeActions nodeId={id}>
           <NodeViewTrigger onClick={() => setViewOpen(true)} />
         </NodeActions>
-        <NodeHeader icon={Sparkles} label={nodeData.label} color={nodeData.color} />
+        <NodeHeader icon={Sparkles} label="Synthesis" color={nodeData.color} />
+
+        {/* Title */}
+        {nodeData.title && (
+          <div className="px-4 pt-3 pb-1">
+            <p className="text-sm font-semibold text-foreground">{nodeData.title}</p>
+          </div>
+        )}
 
         <div className="px-4 py-3 max-h-[200px] overflow-y-auto pointer-events-none">
           <p className="text-xs leading-relaxed text-muted-foreground whitespace-pre-wrap">
@@ -38,7 +45,7 @@ function SynthesisOutputNodeComponent({ id, data, selected }: NodeProps) {
         </div>
       </div>
 
-      <NodeViewDialog open={viewOpen} onOpenChange={setViewOpen} icon={Sparkles} label={nodeData.label} color={nodeData.color}>
+      <NodeViewDialog open={viewOpen} onOpenChange={setViewOpen} icon={Sparkles} label={nodeData.title || "Synthesis"} color={nodeData.color}>
         <p className="text-base leading-relaxed text-foreground whitespace-pre-wrap">
           {nodeData.synthesis || "No synthesis"}
         </p>

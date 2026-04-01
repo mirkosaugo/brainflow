@@ -2,13 +2,20 @@
 
 import { memo, useState } from "react";
 import { type NodeProps } from "@xyflow/react";
-import { Bot } from "lucide-react";
+import { Bot, BrainCircuit } from "lucide-react";
 import type { DigitalTwinData } from "@/types/canvas";
 import { useNodeData } from "@/hooks/use-node-data";
+import { useCanvasActions } from "@/hooks/use-canvas-actions";
 import { getCardStyle } from "@/lib/node-style";
+import { ICON_BTN_CLASS } from "@/config/constants";
 import { NodeActions } from "./node-actions";
 import { NodeHeader } from "./node-header";
 import { NodeViewTrigger, NodeViewDialog } from "./node-view-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const MODES = [
   { id: "contraddici" as const, label: "Challenge", color: "#F9A8D4" },
@@ -20,6 +27,7 @@ const MODES = [
 function DigitalTwinNodeComponent({ id, data, selected }: NodeProps) {
   const [nodeData] = useNodeData<DigitalTwinData>(id, data);
   const [viewOpen, setViewOpen] = useState(false);
+  const { onThinkTwin } = useCanvasActions();
   const activeMode = MODES.find((m) => m.id === nodeData.mode) ?? MODES[0];
 
   return (
@@ -29,6 +37,15 @@ function DigitalTwinNodeComponent({ id, data, selected }: NodeProps) {
         style={getCardStyle(nodeData.color, selected)}
       >
         <NodeActions nodeId={id}>
+          <Tooltip>
+            <TooltipTrigger
+              className={ICON_BTN_CLASS}
+              onClick={() => onThinkTwin(id)}
+            >
+              <BrainCircuit className="h-3.5 w-3.5" />
+            </TooltipTrigger>
+            <TooltipContent side="right">Think</TooltipContent>
+          </Tooltip>
           <NodeViewTrigger onClick={() => setViewOpen(true)} />
         </NodeActions>
         <div className="pointer-events-none">
@@ -61,13 +78,13 @@ function DigitalTwinNodeComponent({ id, data, selected }: NodeProps) {
         {/* Response area */}
         <div className="px-4 pb-4">
           <div className="rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] p-3 min-h-[60px] max-h-[120px] overflow-y-auto">
-            {nodeData.status === "thinking" ? (
+            {(nodeData.status === "thinking" || nodeData.status === "debating") ? (
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <div
                   className="h-3.5 w-3.5 rounded-full border-2 border-t-transparent animate-spin"
                   style={{ borderColor: `${activeMode.color} transparent ${activeMode.color} ${activeMode.color}` }}
                 />
-                Thinking...
+                {nodeData.status === "debating" ? "Debating..." : "Thinking..."}
               </div>
             ) : nodeData.lastResponse ? (
               <div>
@@ -83,7 +100,7 @@ function DigitalTwinNodeComponent({ id, data, selected }: NodeProps) {
               </div>
             ) : (
               <p className="text-xs text-muted-foreground/40 italic">
-                The twin will respond on Run Flow...
+                Press Think to generate a response...
               </p>
             )}
           </div>

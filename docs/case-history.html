@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BrainFlow — Case History | AI-Orchestrated Development</title>
+  <title>SymposiumAI — Case History | AI-Orchestrated Development</title>
   <style>
-    /* ============================================
-       BrainFlow Design System — Embedded for portability
-       ============================================ */
     @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
 
     :root {
@@ -22,6 +19,9 @@
       --purple: #A78BFA;
       --cyan: #38BDF8;
       --emerald: #34D399;
+      --amber: #FBBF24;
+      --rose: #FF6B9D;
+      --indigo: #818CF8;
       --slate: #64748b;
       --radius: 0.875rem;
       --font-sans: 'Satoshi', system-ui, sans-serif;
@@ -38,711 +38,410 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ============================================
-       Layout
-       ============================================ */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
 
-    /* ============================================
-       Hero
-       ============================================ */
-    .hero {
-      padding: 6rem 0 4rem;
-      text-align: center;
-      position: relative;
-    }
-
+    /* Hero */
+    .hero { padding: 6rem 0 4rem; text-align: center; position: relative; }
     .hero::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px;
-      height: 600px;
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 600px; height: 600px;
       background: radial-gradient(circle, rgba(167, 139, 250, 0.08) 0%, transparent 70%);
       pointer-events: none;
     }
-
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 1rem;
-      border-radius: 2rem;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      font-size: 0.8rem;
-      color: var(--fg-muted);
-      margin-bottom: 2rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.4rem 1rem; border-radius: 2rem;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      font-size: 0.8rem; color: var(--fg-muted); margin-bottom: 2rem;
       backdrop-filter: blur(20px);
     }
-
-    .hero-badge .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--emerald);
-    }
-
-    h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-    }
-
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); }
+    h1 { font-size: 3.5rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1.5rem; }
     h1 .accent { color: var(--purple); }
+    .hero p { font-size: 1.2rem; color: var(--fg-muted); max-width: 600px; margin: 0 auto; }
 
-    .hero p {
-      font-size: 1.2rem;
-      color: var(--fg-muted);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* ============================================
-       Sections
-       ============================================ */
-    section {
-      padding: 4rem 0;
-      border-top: 1px solid var(--border);
-    }
-
-    h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-    }
-
-    h3 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      margin-top: 2rem;
-    }
-
+    /* Sections */
+    section { padding: 4rem 0; border-top: 1px solid var(--border); }
+    h2 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; margin-top: 2rem; }
     p { margin-bottom: 1rem; }
+    .section-lead { font-size: 1.05rem; color: var(--fg-muted); margin-bottom: 2.5rem; }
 
-    .section-lead {
-      font-size: 1.05rem;
-      color: var(--fg-muted);
-      margin-bottom: 2.5rem;
-    }
-
-    /* ============================================
-       Glass Cards
-       ============================================ */
+    /* Glass Cards */
     .glass-card {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      backdrop-filter: blur(40px);
-      box-shadow: var(--glass-shadow);
-      margin-bottom: 1.5rem;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: var(--radius); padding: 1.5rem;
+      backdrop-filter: blur(40px); box-shadow: var(--glass-shadow); margin-bottom: 1.5rem;
     }
-
-    .glass-card h4 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .glass-card p {
-      color: var(--fg-muted);
-      font-size: 0.9rem;
-    }
-
+    .glass-card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .glass-card p { color: var(--fg-muted); font-size: 0.9rem; }
     .glass-card .tag {
-      display: inline-block;
-      padding: 0.15rem 0.6rem;
-      border-radius: 1rem;
-      font-size: 0.75rem;
-      font-weight: 500;
-      margin-right: 0.5rem;
-      margin-top: 0.75rem;
+      display: inline-block; padding: 0.15rem 0.6rem; border-radius: 1rem;
+      font-size: 0.75rem; font-weight: 500; margin-right: 0.5rem; margin-top: 0.75rem;
     }
-
     .tag-purple { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
     .tag-cyan { background: rgba(56, 189, 248, 0.15); color: var(--cyan); }
     .tag-emerald { background: rgba(52, 211, 153, 0.15); color: var(--emerald); }
+    .tag-amber { background: rgba(251, 191, 36, 0.15); color: var(--amber); }
+    .tag-rose { background: rgba(255, 107, 157, 0.15); color: var(--rose); }
     .tag-slate { background: rgba(100, 116, 139, 0.15); color: var(--slate); }
 
-    /* ============================================
-       Grid
-       ============================================ */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
+    /* Grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
     @media (max-width: 640px) {
-      .grid-2 { grid-template-columns: 1fr; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
       h1 { font-size: 2.2rem; }
     }
 
-    /* ============================================
-       Code blocks
-       ============================================ */
+    /* Code */
     code {
-      font-family: var(--font-mono);
-      font-size: 0.85em;
-      background: rgba(255, 255, 255, 0.08);
-      padding: 0.15rem 0.4rem;
-      border-radius: 0.3rem;
+      font-family: var(--font-mono); font-size: 0.85em;
+      background: rgba(255, 255, 255, 0.08); padding: 0.15rem 0.4rem; border-radius: 0.3rem;
     }
-
     pre {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      overflow-x: auto;
-      margin: 1rem 0 1.5rem;
-      font-size: 0.85rem;
-      line-height: 1.6;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.25rem; overflow-x: auto; margin: 1rem 0 1.5rem; font-size: 0.85rem; line-height: 1.6;
     }
+    pre code { background: none; padding: 0; }
 
-    pre code {
-      background: none;
-      padding: 0;
-    }
-
-    /* ============================================
-       Timeline
-       ============================================ */
-    .timeline {
-      position: relative;
-      padding-left: 2rem;
-    }
-
+    /* Timeline */
+    .timeline { position: relative; padding-left: 2rem; }
     .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--purple), var(--emerald), var(--cyan));
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--purple), var(--emerald), var(--cyan), var(--amber));
       border-radius: 1px;
     }
-
-    .timeline-item {
-      position: relative;
-      margin-bottom: 2rem;
-    }
-
+    .timeline-item { position: relative; margin-bottom: 2rem; }
     .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -2rem;
-      top: 0.5rem;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--purple);
-      border: 2px solid var(--bg);
+      content: ''; position: absolute; left: -2rem; top: 0.5rem;
+      width: 10px; height: 10px; border-radius: 50%; background: var(--purple); border: 2px solid var(--bg);
     }
-
     .timeline-item:nth-child(2)::before { background: var(--emerald); }
     .timeline-item:nth-child(3)::before { background: var(--cyan); }
-    .timeline-item:nth-child(4)::before { background: var(--purple); }
-    .timeline-item:nth-child(5)::before { background: var(--emerald); }
+    .timeline-item:nth-child(4)::before { background: var(--amber); }
+    .timeline-item:nth-child(5)::before { background: var(--rose); }
+    .timeline-item:nth-child(6)::before { background: var(--indigo); }
+    .timeline-date { font-size: 0.8rem; color: var(--fg-muted); margin-bottom: 0.25rem; }
+    .timeline-title { font-weight: 600; margin-bottom: 0.25rem; }
+    .timeline-desc { font-size: 0.9rem; color: var(--fg-muted); }
 
-    .timeline-date {
-      font-size: 0.8rem;
-      color: var(--fg-muted);
-      margin-bottom: 0.25rem;
-    }
-
-    .timeline-title {
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-
-    .timeline-desc {
-      font-size: 0.9rem;
-      color: var(--fg-muted);
-    }
-
-    /* ============================================
-       Skill Map
-       ============================================ */
-    .skill-row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
+    /* Skill Map */
+    .skill-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border); }
     .skill-row:last-child { border-bottom: none; }
+    .skill-cmd { font-family: var(--font-mono); font-size: 0.85rem; color: var(--purple); min-width: 140px; font-weight: 500; }
+    .skill-desc { color: var(--fg-muted); font-size: 0.9rem; }
 
-    .skill-cmd {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--purple);
-      min-width: 140px;
-      font-weight: 500;
-    }
-
-    .skill-desc {
-      color: var(--fg-muted);
-      font-size: 0.9rem;
-    }
-
-    /* ============================================
-       Philosophy Quote
-       ============================================ */
+    /* Blockquote */
     blockquote {
-      border-left: 3px solid var(--purple);
-      padding: 1rem 1.5rem;
-      background: rgba(167, 139, 250, 0.05);
-      border-radius: 0 var(--radius) var(--radius) 0;
-      margin: 2rem 0;
-      font-style: italic;
-      color: var(--fg-muted);
+      border-left: 3px solid var(--purple); padding: 1rem 1.5rem;
+      background: rgba(167, 139, 250, 0.05); border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 2rem 0; font-style: italic; color: var(--fg-muted);
     }
+    blockquote strong { color: var(--fg); font-style: normal; }
 
-    blockquote strong {
-      color: var(--fg);
-      font-style: normal;
-    }
-
-    /* ============================================
-       Architecture Diagram
-       ============================================ */
+    /* Architecture Diagram */
     .arch-diagram {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      text-align: center;
-      margin: 1.5rem 0;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      line-height: 1.8;
-      color: var(--fg-muted);
-      overflow-x: auto;
-      white-space: pre;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 2rem; text-align: center; margin: 1.5rem 0;
+      font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8;
+      color: var(--fg-muted); overflow-x: auto; white-space: pre;
     }
+    .arch-diagram .hl-purple { color: var(--purple); font-weight: 600; }
+    .arch-diagram .hl-cyan { color: var(--cyan); font-weight: 600; }
+    .arch-diagram .hl-emerald { color: var(--emerald); font-weight: 600; }
+    .arch-diagram .hl-amber { color: var(--amber); font-weight: 600; }
 
-    .arch-diagram .highlight-purple { color: var(--purple); font-weight: 600; }
-    .arch-diagram .highlight-cyan { color: var(--cyan); font-weight: 600; }
-    .arch-diagram .highlight-emerald { color: var(--emerald); font-weight: 600; }
-
-    /* ============================================
-       Footer
-       ============================================ */
-    footer {
-      padding: 3rem 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      color: var(--fg-muted);
-      font-size: 0.85rem;
-    }
-
-    footer a {
-      color: var(--purple);
-      text-decoration: none;
-    }
-
-    /* ============================================
-       List
-       ============================================ */
-    ul, ol {
-      padding-left: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    li {
-      margin-bottom: 0.4rem;
-      color: var(--fg-muted);
-    }
-
-    li strong { color: var(--fg); }
-
-    /* ============================================
-       Accent line
-       ============================================ */
     .accent-line {
-      width: 60px;
-      height: 3px;
-      border-radius: 2px;
-      background: linear-gradient(to right, var(--purple), var(--cyan));
-      margin-bottom: 1.5rem;
+      width: 60px; height: 3px; border-radius: 2px;
+      background: linear-gradient(to right, var(--purple), var(--cyan)); margin-bottom: 1.5rem;
     }
+
+    /* Footer */
+    footer { padding: 3rem 0; border-top: 1px solid var(--border); text-align: center; color: var(--fg-muted); font-size: 0.85rem; }
+    footer a { color: var(--purple); text-decoration: none; }
+
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.4rem; color: var(--fg-muted); }
+    li strong { color: var(--fg); }
   </style>
 </head>
 <body>
 
-  <!-- ============================================
-       HERO
-       ============================================ -->
+  <!-- HERO -->
   <div class="container">
     <div class="hero">
-      <div class="hero-badge">
-        <span class="dot"></span>
-        Case History — March 2026
-      </div>
-      <h1>Building <span class="accent">BrainFlow</span> as a<br>Solo AI Orchestrator</h1>
-      <p>How one web architect used Claude Code skills, agents, and orchestration patterns to build an AI-powered brainstorming canvas with Digital Twins — solo.</p>
+      <div class="hero-badge"><span class="dot"></span>Case History — April 2026</div>
+      <h1>Building <span class="accent">SymposiumAI</span> as a<br>Solo AI Orchestrator</h1>
+      <p>How one web architect used Claude Code to build a structured thinking canvas with AI-powered Digital Twins that think, debate, and synthesize — solo.</p>
     </div>
   </div>
 
-  <!-- ============================================
-       1. THE VISION
-       ============================================ -->
+  <!-- 1. THE VISION -->
   <div class="container">
     <section id="vision">
       <div class="accent-line"></div>
       <h2>1. The Vision</h2>
-      <p class="section-lead">A case history in AI-augmented development — not replacing teams, but redefining what one person can orchestrate.</p>
+      <p class="section-lead">A structured thinking tool where AI personas challenge your ideas before you commit to them.</p>
 
       <blockquote>
-        <strong>"Da solo so orchestrare tutto quasi come se fossi un team"</strong> — but the point isn't that AI replaces people. It's that when human creativity directs AI execution, one person can deliver across design, engineering, documentation, and presentation with a consistency that was previously only possible with a coordinated team.
+        <strong>"What if you could put different thinkers in a room with your ideas — and watch them debate?"</strong> — SymposiumAI makes this tangible. Place ideas on a canvas, assign AI personas with distinct thinking styles, and let them think, debate, and synthesize.
       </blockquote>
 
-      <h3>What is BrainFlow?</h3>
-      <p>BrainFlow is a canvas-based brainstorming tool where you build visual flows of ideas and let AI synthesize them. Create text notes, concept cards, goal cards, perplexity cards, and <strong>Digital Twins</strong> — AI personas with programmable behaviors (devil's advocate, collaborator, analyst, provocateur). Connect everything to a <strong>Run Flow</strong> node for AI synthesis, then chain the output into new flows for iterative deepening.</p>
+      <h3>What is SymposiumAI?</h3>
+      <p>SymposiumAI is a canvas-based structured thinking tool. You place content cards (concepts, goals, questions, notes, images) on a spatial canvas and group them by color. Each color is a topic. You then add <strong>Digital Twins</strong> — AI personas with programmable behavior modes — and trigger a three-step AI flow:</p>
 
-      <div class="grid-2">
+      <div class="grid-3">
         <div class="glass-card">
-          <h4>The Product</h4>
-          <p>Infinite canvas with Digital Twins, multiple card types, glassmorphic UI, real-time AI synthesis, chainable flows, and ambient visual effects.</p>
-          <span class="tag tag-purple">Digital Twins</span>
-          <span class="tag tag-cyan">Brainstorming</span>
-          <span class="tag tag-emerald">Claude AI</span>
+          <h4>Think</h4>
+          <p>Each twin individually reads the content cards of its color and generates an in-character opinion based on its personality and mode.</p>
+          <span class="tag tag-purple">Per-twin</span>
         </div>
         <div class="glass-card">
-          <h4>The Process</h4>
-          <p>Built using Claude Code with custom skills, specialized agents, and documented orchestration — every decision recorded, every pattern reusable.</p>
-          <span class="tag tag-purple">Skills</span>
-          <span class="tag tag-cyan">Agents</span>
-          <span class="tag tag-slate">Documentation</span>
+          <h4>Debate</h4>
+          <p>When 2+ twins have opinions, they debate sequentially — each responding to what previous twins said. Produces a Debate Output card.</p>
+          <span class="tag tag-rose">Multi-twin</span>
+        </div>
+        <div class="glass-card">
+          <h4>Synthesize</h4>
+          <p>All content cards + the debate output are distilled into a structured synthesis: narrative, conflicts, open questions, next steps.</p>
+          <span class="tag tag-emerald">Final output</span>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- ============================================
-       2. THE STACK
-       ============================================ -->
+  <!-- 2. HOW IT WORKS -->
+  <div class="container">
+    <section id="how-it-works">
+      <div class="accent-line"></div>
+      <h2>2. How It Works</h2>
+      <p class="section-lead">Color is the semantic link. No edges, no connections — just color grouping.</p>
+
+      <h3>Canvas Elements</h3>
+      <div class="grid-2">
+        <div class="glass-card" style="border-left: 4px solid var(--purple);">
+          <h4>Content Cards</h4>
+          <p>Text notes, concept cards (title + description + tags), goal cards (criteria + timeframe + priority), open questions (with blocking flag), and images with captions.</p>
+        </div>
+        <div class="glass-card" style="border-left: 4px solid var(--indigo);">
+          <h4>Digital Twins</h4>
+          <p>AI personas with a name, personality description, and behavior mode: Challenge, Collaborate, Analyze, or Provoke. Each twin has a Think button.</p>
+        </div>
+        <div class="glass-card" style="border-left: 4px solid var(--rose);">
+          <h4>Debate Output</h4>
+          <p>Auto-generated card containing the full debate transcript between twins. Feeds into the final synthesis as context.</p>
+        </div>
+        <div class="glass-card" style="border-left: 4px solid var(--emerald);">
+          <h4>Synthesis Output</h4>
+          <p>Structured AI synthesis with titled sections: narrative, conflicts, open questions, next steps, and goal alignment. Can be reassigned to another color.</p>
+        </div>
+      </div>
+
+      <h3>The Flow</h3>
+      <div class="arch-diagram">
+<span class="hl-purple">Content Cards</span> (same color)
+        |
+        v
+<span class="hl-amber">Think</span> --- each twin reads content, generates opinion
+        |
+        v
+<span class="hl-purple">Debate</span> --- twins discuss in turns (needs 2+ opinions)
+        |
+        v
+<span class="hl-cyan">Debate Output</span> card (transcript)
+        |
+        v
+<span class="hl-emerald">Synthesize</span> --- content cards + debate output
+        |
+        v
+<span class="hl-emerald">Synthesis Output</span> card (structured)
+        |
+        v
+(can be moved to another color as input)</div>
+
+      <h3>Color-Based Grouping</h3>
+      <p>Every node has a selectable color — not tied to its type. Same color = same topic. The color filter bar at the top shows all colors present, with editable labels. Colors available: Slate, Purple, Cyan, Emerald, Amber, Rose, Indigo.</p>
+
+      <h3>Smart Create</h3>
+      <p>Type a natural language description in the prompt bar and the <code>/api/smart-create</code> endpoint uses Claude to determine the best card type and generate rich content automatically.</p>
+    </section>
+  </div>
+
+  <!-- 3. DIGITAL TWINS DEEP DIVE -->
+  <div class="container">
+    <section id="twins">
+      <div class="accent-line"></div>
+      <h2>3. Digital Twins Deep Dive</h2>
+      <p class="section-lead">The distinctive feature: AI personas with distinct thinking styles that react to your ideas.</p>
+
+      <div class="grid-2">
+        <div class="glass-card" style="border-left: 4px solid #F9A8D4;">
+          <h4>Challenge Mode</h4>
+          <p>Devil's advocate. Finds weaknesses, pushes back, questions assumptions. Forces you to defend your thinking.</p>
+        </div>
+        <div class="glass-card" style="border-left: 4px solid #86EFAC;">
+          <h4>Collaborate Mode</h4>
+          <p>Builds on ideas, finds unexpected connections, proposes concrete developments. Constructive and generative.</p>
+        </div>
+        <div class="glass-card" style="border-left: 4px solid #FDE68A;">
+          <h4>Analyze Mode</h4>
+          <p>Structured critical analysis. Finds logical gaps, highlights contradictions, assesses feasibility. Precise and methodical.</p>
+        </div>
+        <div class="glass-card" style="border-left: 4px solid #C4B5FD;">
+          <h4>Provoke Mode</h4>
+          <p>Radical reframes, extreme hypotheses, uncomfortable questions. Pushes thinking beyond comfortable limits.</p>
+        </div>
+      </div>
+
+      <h3>How Twins Process Information</h3>
+      <p><strong>Think</strong> — triggered per-twin. Each twin gets its own dedicated API call (<code>/api/twin</code>) with the board context. The system prompt puts the twin fully in character. Response appears inside the twin card.</p>
+      <p><strong>Debate</strong> — triggered when 2+ twins have Think responses. The <code>/api/debate</code> endpoint runs sequential turns: Twin A speaks, Twin B responds to Twin A, Twin A responds to Twin B. Each twin sees the full conversation history. The debate transcript becomes a Debate Output card.</p>
+
+      <h3>Demo: Greek Mythology</h3>
+      <p>The initial canvas demonstrates the system with a Greek mythology scenario. Four color columns represent different aspects of the Titan crisis:</p>
+      <ul>
+        <li><strong>Amber (Olympus)</strong> — Zeus (Provoke) + Hera (Analyze) debate the grand strategy</li>
+        <li><strong>Purple (Wisdom)</strong> — Athena (Analyze) dissects strategic options solo</li>
+        <li><strong>Rose (War)</strong> — Ares (Challenge) + Artemis (Collaborate) clash on military approach</li>
+        <li><strong>Cyan (Diplomacy)</strong> — Apollo (Collaborate) + Dionysus (Provoke) debate peace vs chaos</li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- 4. THE STACK -->
   <div class="container">
     <section id="stack">
       <div class="accent-line"></div>
-      <h2>2. The Stack</h2>
-      <p class="section-lead">Modern tooling, intentional choices. Each dependency earned its place.</p>
+      <h2>4. The Stack</h2>
+      <p class="section-lead">Modern tooling, intentional choices.</p>
 
       <div class="grid-2">
         <div class="glass-card">
           <h4>Framework</h4>
-          <p>Next.js 16.2 (App Router) with React 19 and TypeScript 5 strict mode. Server-side API routes for Claude integration.</p>
+          <p>Next.js 16.2 (App Router) with React 19 and TypeScript 5. Server-side API routes for AI integration.</p>
         </div>
         <div class="glass-card">
           <h4>Canvas</h4>
-          <p>@xyflow/react 12 (React Flow v12) — node graph system with custom nodes, edges, connection logic, and smart handle positioning.</p>
+          <p>@xyflow/react 12 (React Flow v12) — node system with custom node types, no edges (color-based grouping instead).</p>
         </div>
         <div class="glass-card">
           <h4>Styling</h4>
-          <p>Tailwind CSS v4 + shadcn/ui + class-variance-authority. Glassmorphic design system with backdrop-blur, oklch colors, and radius scale.</p>
+          <p>Tailwind CSS v4 + shadcn/ui + CVA. Glassmorphic overlays, oklch colors, radius scale, dark/light themes.</p>
         </div>
         <div class="glass-card">
           <h4>AI</h4>
-          <p>@anthropic-ai/sdk — Claude API for creative synthesis. Connected nodes are collected and processed through a system prompt tuned for artists.</p>
+          <p>Claude Sonnet via @anthropic-ai/sdk. Four API endpoints: <code>/api/run</code>, <code>/api/twin</code>, <code>/api/debate</code>, <code>/api/smart-create</code>.</p>
         </div>
       </div>
-
-      <h3>Architecture Diagram</h3>
-      <div class="arch-diagram">
-<span class="highlight-purple">┌─────────────────────────────────────────────┐</span>
-<span class="highlight-purple">│                  Flow Canvas                 │</span>
-<span class="highlight-purple">│                                              │</span>
-<span class="highlight-purple">│  ┌──────┐  ┌──────────┐  ┌───────┐  ┌─────┐│</span>
-<span class="highlight-purple">│  │ Text │──│ Concept  │──│ Image │──│ Run ││</span>
-<span class="highlight-purple">│  │ Node │  │ Card     │  │ Node  │  │ Node││</span>
-<span class="highlight-purple">│  └──────┘  └──────────┘  └───────┘  └──┬──┘│</span>
-<span class="highlight-purple">│                                        │    │</span>
-<span class="highlight-purple">└────────────────────────────────────────┼────┘</span>
-                                         │
-                                         ▼
-<span class="highlight-emerald">               ┌──────────────────┐</span>
-<span class="highlight-emerald">               │   POST /api/run  │</span>
-<span class="highlight-emerald">               │   Claude API     │</span>
-<span class="highlight-emerald">               └──────────────────┘</span>
-                                         │
-                    ┌────────────────────┼───────────────────┐
-                    ▼                    ▼                   ▼
-<span class="highlight-cyan">         ┌──────────────┐  ┌──────────────┐  ┌──────────────┐</span>
-<span class="highlight-cyan">         │ Glassmorphic │  │ Ambient Glow │  │ Result Node  │</span>
-<span class="highlight-cyan">         │ Overlays     │  │ Animation    │  │ Display      │</span>
-<span class="highlight-cyan">         └──────────────┘  └──────────────┘  └──────────────┘</span></div>
     </section>
   </div>
 
-  <!-- ============================================
-       3. AI ORCHESTRATION MODEL
-       ============================================ -->
+  <!-- 5. AI ORCHESTRATION -->
   <div class="container">
     <section id="orchestration">
       <div class="accent-line"></div>
-      <h2>3. The AI Orchestration Model</h2>
-      <p class="section-lead">Six custom skills encode project standards. Agents execute them. The human architect directs.</p>
-
-      <h3>Custom Skills</h3>
-      <p>Each skill is a structured prompt in <code>.claude/skills/</code> that encodes the project's design system, architecture rules, and quality standards. When invoked, the AI agent operates within these constraints — producing consistent results across different sessions and contexts.</p>
+      <h2>5. The AI Orchestration Model</h2>
+      <p class="section-lead">Six custom skills encode project standards. The human architect directs.</p>
 
       <div class="skill-row">
         <span class="skill-cmd">/design</span>
-        <span class="skill-desc">Any visual task — logos, palettes, graphics — enforcing the exact design tokens (oklch colors, radius scale, glass effects)</span>
+        <span class="skill-desc">Visual tasks — enforcing exact design tokens (oklch colors, radius scale, glass effects)</span>
       </div>
       <div class="skill-row">
         <span class="skill-cmd">/component</span>
-        <span class="skill-desc">New UI components — runs a pre-flight checklist (shadcn → existing → base-ui → custom) before writing any code</span>
+        <span class="skill-desc">New UI components — shadcn pre-flight checklist before writing code</span>
       </div>
       <div class="skill-row">
         <span class="skill-cmd">/node</span>
-        <span class="skill-desc">New canvas node types — composes from shared primitives (NodeHandles, NodeHeader, NodeActions, EditableField)</span>
+        <span class="skill-desc">Canvas node types — composes from shared primitives (NodeHeader, NodeActions, etc.)</span>
       </div>
       <div class="skill-row">
         <span class="skill-cmd">/present</span>
-        <span class="skill-desc">Presentation materials — pitch decks, case studies, marketing pages in the Flow brand voice</span>
+        <span class="skill-desc">Presentation materials — pitch decks, case studies in the SymposiumAI brand</span>
       </div>
       <div class="skill-row">
         <span class="skill-cmd">/audit</span>
-        <span class="skill-desc">Systematic review — architecture compliance, design system fidelity, code quality, performance, a11y</span>
+        <span class="skill-desc">Systematic review — architecture, design system fidelity, performance, a11y</span>
       </div>
       <div class="skill-row">
         <span class="skill-cmd">/document</span>
-        <span class="skill-desc">Decision records — captures why, not just what, in structured ADR format for future reference</span>
+        <span class="skill-desc">Decision records — captures why, not just what</span>
       </div>
-
-      <h3>Why Skills Matter</h3>
-      <p>Without skills, every AI interaction starts from scratch. You explain the design system again. You remind it about shadcn. You re-specify the node composition pattern. Skills encode this knowledge <strong>once</strong> and enforce it <strong>every time</strong>. The result: consistency across days, weeks, and sessions — the kind of consistency that normally requires a team with shared documentation and code review.</p>
-
-      <h3>Agent Orchestration Flow</h3>
-      <div class="arch-diagram">
-<span class="highlight-purple">  Human Architect</span>
-        │
-        │ directs
-        ▼
-  ┌─────────────┐
-  │ Claude Code  │
-  │ (orchestrator)│
-  └──────┬──────┘
-         │ dispatches via skills & agents
-         │
-    ┌────┼────┬────────┬──────────┬──────────┐
-    ▼    ▼    ▼        ▼          ▼          ▼
-<span class="highlight-purple"> /design</span> <span class="highlight-cyan">/component</span> <span class="highlight-emerald">/node</span>  <span class="highlight-purple">/present</span>  <span class="highlight-cyan">/audit</span>  <span class="highlight-emerald">/document</span>
-    │    │    │        │          │          │
-    └────┴────┴────────┴──────────┴──────────┘
-                       │
-                       ▼
-              Consistent Output
-       (design system ∩ architecture rules)</div>
     </section>
   </div>
 
-  <!-- ============================================
-       4. DESIGN SYSTEM
-       ============================================ -->
-  <div class="container">
-    <section id="design-system">
-      <div class="accent-line"></div>
-      <h2>4. The Design System</h2>
-      <p class="section-lead">Every color, radius, and shadow is tokenized. The same system powers the app, the docs, and this page.</p>
-
-      <h3>Color Palette</h3>
-      <div class="grid-2">
-        <div class="glass-card" style="border-left: 4px solid #A78BFA;">
-          <h4 style="color: #A78BFA;">Purple — #A78BFA</h4>
-          <p>Primary brand accent. Concept cards, creative elements, primary actions.</p>
-        </div>
-        <div class="glass-card" style="border-left: 4px solid #38BDF8;">
-          <h4 style="color: #38BDF8;">Cyan — #38BDF8</h4>
-          <p>Media and visual elements. Image nodes, technology references.</p>
-        </div>
-        <div class="glass-card" style="border-left: 4px solid #34D399;">
-          <h4 style="color: #34D399;">Emerald — #34D399</h4>
-          <p>AI and success states. Run nodes, confirmations, growth indicators.</p>
-        </div>
-        <div class="glass-card" style="border-left: 4px solid #64748b;">
-          <h4 style="color: #64748b;">Slate — #64748b</h4>
-          <p>Neutral supporting elements. Text nodes, secondary information.</p>
-        </div>
-      </div>
-
-      <h3>Glassmorphism</h3>
-      <p>App overlays (header, prompt bar, toolbars, panels) use a glassmorphic treatment: semi-transparent background, <code>backdrop-blur-2xl</code>, subtle border, and a soft shadow. Canvas nodes are <strong>exempt</strong> — they use solid backgrounds for readability.</p>
-
-      <pre><code>/* Glass overlay formula */
-background: rgba(255, 255, 255, 0.06);  /* dark mode */
-border: 1px solid rgba(255, 255, 255, 0.1);
-backdrop-filter: blur(40px);
-box-shadow: 0 0 15px 0 rgb(0 0 0 / 0.25);
-border-radius: 0.875rem;</code></pre>
-
-      <h3>Typography</h3>
-      <p><strong>Satoshi</strong> for all UI text and headings — a geometric sans-serif with personality. <strong>Geist Mono</strong> for code and technical content. Both chosen for their clarity at small sizes and their modern, slightly warm character.</p>
-    </section>
-  </div>
-
-  <!-- ============================================
-       5. BUILD TIMELINE
-       ============================================ -->
+  <!-- 6. BUILD TIMELINE -->
   <div class="container">
     <section id="timeline">
       <div class="accent-line"></div>
-      <h2>5. Build Timeline</h2>
-      <p class="section-lead">Key milestones in the development of Flow, each building on the last.</p>
+      <h2>6. Build Timeline</h2>
+      <p class="section-lead">Key milestones in the development of SymposiumAI.</p>
 
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-date">Phase 1</div>
           <div class="timeline-title">Canvas Foundation</div>
-          <div class="timeline-desc">React Flow integration, basic node types (text, concept card), edge system with smart handle positioning, infinite canvas with dot pattern background.</div>
+          <div class="timeline-desc">React Flow integration, basic node types (text, concept card), edge system, infinite canvas with dot pattern background.</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-date">Phase 2</div>
-          <div class="timeline-title">AI Integration</div>
-          <div class="timeline-desc">Claude API route, Run node type, graph traversal for collecting connected content, ambient glow animation during processing.</div>
+          <div class="timeline-title">Node Types & Color System</div>
+          <div class="timeline-desc">Goal cards, perplexity cards, image nodes, Digital Twins. Replaced edge-based connections with color-based grouping. Node edit drawer with color picker.</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-date">Phase 3</div>
-          <div class="timeline-title">Design System & Polish</div>
-          <div class="timeline-desc">Glassmorphic overlays, oklch color tokens, dark/light themes, Satoshi typography, radius scale, connection mode UX with visual feedback.</div>
+          <div class="timeline-title">AI Integration</div>
+          <div class="timeline-desc">Run by Color synthesis, Smart Create, structured output (conflicts, questions, next steps). Single API call for everything.</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-date">Phase 4</div>
-          <div class="timeline-title">Component Library</div>
-          <div class="timeline-desc">Storybook 10 with stories for foundations (colors, icons, spacing, typography), components (buttons, badges, inputs), and tokens (glass morphism, node colors).</div>
+          <div class="timeline-title">Think / Debate / Synthesize</div>
+          <div class="timeline-desc">Separated the AI flow into three distinct actions. Dedicated API endpoints for twin thinking and multi-twin debate. Debate Output as a new card type. Twins respond independently with their own API calls.</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-date">Phase 5 — Current</div>
-          <div class="timeline-title">AI Orchestration Infrastructure</div>
-          <div class="timeline-desc">Claude Code skills, agents, CLAUDE.md, AGENTS.md, memory system, documentation pipeline — the meta-layer that makes solo orchestration sustainable.</div>
+          <div class="timeline-date">Phase 5</div>
+          <div class="timeline-title">UX Polish</div>
+          <div class="timeline-desc">Color-labeled filter pills, view dialogs for all card types, animated gradient icons for Synthesize/Debate buttons, column-based node positioning, debating/thinking status labels.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 6 — Current</div>
+          <div class="timeline-title">Demo & Documentation</div>
+          <div class="timeline-desc">Greek mythology demo scenario, case history documentation, skills and agent orchestration infrastructure.</div>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- ============================================
-       6. LESSONS & PATTERNS
-       ============================================ -->
+  <!-- 7. LESSONS -->
   <div class="container">
     <section id="lessons">
       <div class="accent-line"></div>
-      <h2>6. Lessons & Reusable Patterns</h2>
-      <p class="section-lead">What worked, what to replicate in future projects.</p>
+      <h2>7. Lessons & Patterns</h2>
+      <p class="section-lead">What worked, what to replicate.</p>
 
-      <h3>Pattern 1: Encode Standards in Skills, Not Memory</h3>
-      <p>AI memory is useful for preferences, but skills are better for <strong>standards</strong>. A skill runs the same way every time — it doesn't drift, forget, or interpret differently. The <code>/design</code> skill always checks the same color palette. The <code>/component</code> skill always runs the shadcn pre-flight.</p>
+      <h3>Pattern 1: Separate AI Actions Clearly</h3>
+      <p>The original design had one "Generate" button that did everything. Splitting into Think (individual) / Debate (group) / Synthesize (final) made the flow understandable and gave users control over each step.</p>
 
-      <h3>Pattern 2: Composition Over Configuration</h3>
-      <p>Every canvas node is composed from 4 shared primitives. This isn't about DRY for its own sake — it's about making new node types trivial to create while guaranteeing visual and behavioral consistency. The <code>/node</code> skill encodes this pattern so even an AI agent can't shortcut it.</p>
+      <h3>Pattern 2: Color as Semantic Glue</h3>
+      <p>Edges and connections are visual noise in a brainstorming tool. Color grouping is instant, flexible, and requires zero explicit linking. Moving a card to a new group = changing its color.</p>
 
-      <h3>Pattern 3: Glass for Overlays, Solid for Content</h3>
-      <p>The glassmorphism rule is simple but critical: floating UI gets the blur treatment, canvas content stays solid. This preserves readability where it matters (nodes you're editing) while giving the chrome a premium feel. Encoded in the <code>/design</code> and <code>/component</code> skills.</p>
+      <h3>Pattern 3: Twins Need Personality, Not Just Mode</h3>
+      <p>A "Challenge" mode twin is generic. "Ares — God of War who mocks diplomacy as cowardice" generates responses with character and conviction. The personality field is what makes twins feel like real participants.</p>
 
-      <h3>Pattern 4: Document the Why, Not the What</h3>
-      <p>Code shows what changed. Git shows when. Documentation should capture <strong>why</strong> — the constraints, trade-offs, and alternatives considered. The <code>/document</code> skill produces ADRs (Architecture Decision Records) that capture this context.</p>
+      <h3>Pattern 4: Sequential Debate > Parallel Responses</h3>
+      <p>Having each twin respond independently produces disconnected monologues. Sequential turns where each twin reads previous responses creates actual dialogue — agreement, disagreement, building on specific points.</p>
 
-      <h3>Pattern 5: The Human Stays in the Loop</h3>
-      <p>AI orchestration works best when the human makes <strong>creative and architectural decisions</strong> and the AI handles <strong>execution within defined constraints</strong>. Skills define the constraints. The architect directs the work. Neither works well alone.</p>
+      <h3>Pattern 5: Encode Standards in Skills</h3>
+      <p>Skills are deterministic — they run the same way every time. Memory drifts. The <code>/design</code> skill always checks the same tokens. The <code>/node</code> skill always composes from the same primitives.</p>
     </section>
   </div>
 
-  <!-- ============================================
-       7. PROJECT STRUCTURE
-       ============================================ -->
-  <div class="container">
-    <section id="structure">
-      <div class="accent-line"></div>
-      <h2>7. Project Structure Reference</h2>
-      <p class="section-lead">Complete file map for orientation.</p>
-
-      <pre><code>flow/
-├── .claude/
-│   ├── settings.local.json          # Permissions
-│   ├── skills/
-│   │   ├── design/SKILL.md          # Design system enforcement
-│   │   ├── component/SKILL.md       # Component creation pipeline
-│   │   ├── node/SKILL.md            # Canvas node builder
-│   │   ├── present/SKILL.md         # Presentation materials
-│   │   ├── audit/SKILL.md           # Quality audit checklist
-│   │   └── document/SKILL.md        # Decision documentation
-│   └── projects/.../memory/
-│       ├── MEMORY.md                 # Memory index
-│       ├── feedback_blur_ui.md       # Glassmorphism rules
-│       ├── feedback_shadcn_first.md  # shadcn-first policy
-│       └── feedback_architecture.md  # Architecture patterns
-├── docs/
-│   ├── case-history.html             # This document
-│   ├── decisions/                    # Architecture Decision Records
-│   └── orchestration/                # Agent workflow documentation
-├── src/
-│   ├── app/                          # Next.js App Router
-│   │   ├── globals.css               # Design tokens + animations
-│   │   ├── layout.tsx                # Root layout
-│   │   ├── page.tsx                  # Canvas page
-│   │   └── api/run/route.ts          # Claude API endpoint
-│   ├── components/
-│   │   ├── canvas/                   # 16 canvas components
-│   │   ├── layout/header.tsx         # App header
-│   │   ├── panels/status-bar.tsx     # Zoom + controls
-│   │   ├── prompt/prompt-bar.tsx     # Input + quick actions
-│   │   └── ui/                       # 9 shadcn components
-│   ├── config/
-│   │   ├── constants.ts              # Tokens + shared classes
-│   │   └── initial-data.ts           # Demo content
-│   ├── hooks/                        # useNodeData, useConnectMode
-│   ├── lib/                          # Utils + node-style helpers
-│   ├── providers/theme-provider.tsx  # Dark/light theme
-│   ├── stories/                      # Storybook stories
-│   └── types/canvas.ts              # TypeScript types
-├── CLAUDE.md                         # Project instructions for AI
-├── AGENTS.md                         # Agent orchestration guide
-└── package.json                      # Dependencies</code></pre>
-    </section>
-  </div>
-
-  <!-- ============================================
-       8. HOW TO REPLICATE
-       ============================================ -->
-  <div class="container">
-    <section id="replicate">
-      <div class="accent-line"></div>
-      <h2>8. How to Replicate This Setup</h2>
-      <p class="section-lead">Step-by-step guide for applying this orchestration model to any project.</p>
-
-      <ol>
-        <li><strong>Start with CLAUDE.md</strong> — Define your tech stack, architecture rules, and design tokens. This is the foundation every AI interaction reads.</li>
-        <li><strong>Create AGENTS.md</strong> — Document the agent roles and orchestration philosophy. This frames how AI should approach work in your project.</li>
-        <li><strong>Build skills incrementally</strong> — Start with <code>/design</code> and <code>/component</code> (the most frequently used). Add more as patterns solidify.</li>
-        <li><strong>Encode standards, not preferences</strong> — Skills should contain hard rules (color tokens, composition patterns). Memory should contain soft preferences (user communication style).</li>
-        <li><strong>Use memory for feedback loops</strong> — When you correct the AI, save it as feedback memory so it doesn't repeat mistakes across sessions.</li>
-        <li><strong>Document decisions as you go</strong> — Use <code>/document</code> to capture why decisions were made. Future-you (and interviewers) will thank you.</li>
-        <li><strong>Audit periodically</strong> — Run <code>/audit</code> to catch drift from the design system and architecture patterns.</li>
-      </ol>
-    </section>
-  </div>
-
-  <!-- ============================================
-       FOOTER
-       ============================================ -->
+  <!-- FOOTER -->
   <div class="container">
     <footer>
-      <p>BrainFlow — Case History | Built with Claude Code orchestration</p>
-      <p style="margin-top: 0.5rem;">Web Architect AI &middot; Creative Frontend Development &middot; March 2026</p>
+      <p>SymposiumAI — Case History | Built with Claude Code orchestration</p>
+      <p style="margin-top: 0.5rem;">Web Architect AI &middot; Creative Frontend Development &middot; April 2026</p>
     </footer>
   </div>
 

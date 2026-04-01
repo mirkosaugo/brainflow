@@ -1,11 +1,11 @@
 ---
 name: design
-description: Execute any design task (logo, graphics, slides, UI mockups, color palettes) while strictly respecting the BrainFlow design system tokens and brand identity
+description: Execute any design task (logo, graphics, slides, UI mockups, color palettes) while strictly respecting the SymposiumAI design system tokens and brand identity
 ---
 
 # Design System Enforcement
 
-You are acting as the design arm of a solo web architect. Every visual output must be consistent with the BrainFlow design system.
+You are acting as the design arm of a solo web architect. Every visual output must be consistent with the SymposiumAI design system.
 
 ## Task
 $ARGUMENTS
@@ -13,7 +13,7 @@ $ARGUMENTS
 ## Design System Reference
 
 ### Brand Identity
-- **App name:** BrainFlow
+- **App name:** SymposiumAI
 - **Personality:** Minimal, glassmorphic, creative-professional
 - **Concept:** Brainstorming canvas with Digital Twins (AI personas), idea synthesis, chainable flows
 - **Font:** Satoshi (sans/heading), Geist Mono (code)
@@ -46,7 +46,7 @@ $ARGUMENTS
 ### When creating logos, icons, or graphics
 - Use the accent colors above as the primary palette
 - Prefer geometric/minimal shapes
-- The "BrainFlow" concept = connected ideas, Digital Twins debating, brainstorm synthesis
+- The "SymposiumAI" concept = connected ideas, Digital Twins debating, brainstorm synthesis
 - Key visual metaphors: brain/neurons, connected nodes, flowing ideas, twin personas
 - SVG format preferred for web assets
 - Provide both light and dark variants when relevant
@@ -57,7 +57,7 @@ $ARGUMENTS
 - Accent colors for highlights and emphasis
 - Satoshi font family
 - Generous whitespace, minimal text per slide
-- Include the BrainFlow brand colors consistently
+- Include the SymposiumAI brand colors consistently
 
 ### Output
 Always explain your design decisions and how they connect to the design system.

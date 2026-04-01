@@ -5,7 +5,7 @@ function IntroductionPage() {
     <div className="w-full max-w-4xl space-y-8 bg-background p-8 text-foreground">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">BrainFlow Design System</h1>
+        <h1 className="text-3xl font-bold">SymposiumAI Design System</h1>
         <div className="mt-3 flex flex-wrap gap-2">
           <span className="rounded-full bg-primary px-3 py-0.5 text-xs font-medium text-primary-foreground">
             v1.0
@@ -21,7 +21,7 @@ function IntroductionPage() {
           </span>
         </div>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-          Interactive documentation for the <strong className="text-foreground">BrainFlow</strong> design system —
+          Interactive documentation for the <strong className="text-foreground">SymposiumAI</strong> design system —
           a canvas-based application for visual thinking with AI.
         </p>
       </div>

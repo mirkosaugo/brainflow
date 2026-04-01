@@ -93,7 +93,7 @@ export const WithImage: Story = {
         <AvatarFallback>MR</AvatarFallback>
       </Avatar>
       <Avatar size="lg">
-        <AvatarImage src="https://api.dicebear.com/9.x/initials/svg?seed=BrainFlow" alt="BF" />
+        <AvatarImage src="https://api.dicebear.com/9.x/initials/svg?seed=SymposiumAI" alt="AF" />
         <AvatarFallback>FL</AvatarFallback>
       </Avatar>
     </div>

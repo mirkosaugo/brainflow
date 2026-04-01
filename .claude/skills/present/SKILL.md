@@ -5,7 +5,7 @@ description: Generate presentation materials (pitch decks, case studies, marketi
 
 # Presentation Builder
 
-Generate professional presentation materials for BrainFlow.
+Generate professional presentation materials for SymposiumAI.
 
 ## Request
 $ARGUMENTS
@@ -24,7 +24,7 @@ $ARGUMENTS
 - **Style:** Minimal, generous whitespace, glassmorphic accents
 
 ### Narrative Voice
-- **Product:** BrainFlow — AI-powered brainstorming canvas with Digital Twins, idea synthesis, chainable flows
+- **Product:** SymposiumAI — AI-powered brainstorming canvas with Digital Twins, idea synthesis, chainable flows
 - **Positioning:** Web architect AI — creative frontend developer who orchestrates AI agents
 - **Key message:** "One person orchestrating like a full team — not replacing humans, but showing what's possible when human creativity directs AI execution"
 - **Tone:** Professional but not corporate, confident but not arrogant, technical but accessible

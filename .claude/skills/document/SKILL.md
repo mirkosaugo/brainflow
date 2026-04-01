@@ -5,7 +5,7 @@ description: Document decisions, progress, and rationale — creates structured 
 
 # Decision & Progress Documenter
 
-Record decisions, progress, and rationale for the BrainFlow project.
+Record decisions, progress, and rationale for the SymposiumAI project.
 
 ## What to Document
 $ARGUMENTS

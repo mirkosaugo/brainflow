@@ -10,6 +10,7 @@ const SYSTEM_PROMPT = `You are a strategic facilitator. Your task is to synthesi
 ALWAYS respond in the following JSON format:
 
 {
+  "title": "Short descriptive title for this synthesis (max 6 words)",
   "synthesis": "Cohesive narrative synthesis of all ideas (2-4 paragraphs)",
   "conflicts": [
     { "between": "Node A vs Node B", "tension": "Description of the conflict or tension" }
@@ -108,7 +109,7 @@ function buildSemanticPrompt(inputs: NodeInput[]): string {
   return sections.join("\n\n");
 }
 
-function parseStructuredOutput(text: string): { structured: StructuredOutput | null; raw: string } {
+function parseStructuredOutput(text: string): { structured: StructuredOutput | null; title: string; raw: string } {
   let jsonStr = text.trim();
   const fenceMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (fenceMatch) {
@@ -124,9 +125,9 @@ function parseStructuredOutput(text: string): { structured: StructuredOutput | n
       nextSteps: Array.isArray(parsed.nextSteps) ? parsed.nextSteps : [],
       goalAlignment: parsed.goalAlignment || undefined,
     };
-    return { structured, raw: structured.synthesis };
+    return { structured, title: parsed.title ?? "", raw: structured.synthesis };
   } catch {
-    return { structured: null, raw: text };
+    return { structured: null, title: "", raw: text };
   }
 }
 
@@ -153,10 +154,11 @@ export async function POST(request: Request) {
 
     const textBlock = message.content.find((b) => b.type === "text");
     const rawText = textBlock ? textBlock.text : "No result generated";
-    const { structured, raw } = parseStructuredOutput(rawText);
+    const { structured, title, raw } = parseStructuredOutput(rawText);
 
     return Response.json({
       result: raw,
+      title,
       structuredOutput: structured,
     });
   } catch (error) {

@@ -88,7 +88,7 @@ export function Header() {
         </DropdownMenu>
 
         <h1 className="text-base font-semibold font-heading">
-          StudyFlow — Greek Mythology Project
+          SymposiumAI — Greek Mythology Project
         </h1>
       </div>
 

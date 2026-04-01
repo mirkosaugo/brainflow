@@ -1,11 +1,11 @@
 ---
 name: component
-description: Create a new UI component following the BrainFlow architecture patterns — shadcn-first, glassmorphism for overlays, shared utilities
+description: Create a new UI component following the SymposiumAI architecture patterns — shadcn-first, glassmorphism for overlays, shared utilities
 ---
 
 # Component Builder
 
-Create a new component following BrainFlow's architecture standards.
+Create a new component following SymposiumAI's architecture standards.
 
 ## Component Request
 $ARGUMENTS

@@ -5,7 +5,7 @@ description: Systematic code and architecture audit — reviews quality, perform
 
 # Architecture & Code Auditor
 
-Perform a systematic audit of the specified BrainFlow scope.
+Perform a systematic audit of the specified SymposiumAI scope.
 
 ## Scope
 $ARGUMENTS
